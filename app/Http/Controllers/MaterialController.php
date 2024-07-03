@@ -10,7 +10,7 @@ class MaterialController extends Controller
 {
     public function index()
     {
-        return Inertia::render('AddMaterial');
+        return Inertia::render('AddMaterials');
     }
 
     public function indexs()

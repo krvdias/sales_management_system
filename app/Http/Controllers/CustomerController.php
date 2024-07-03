@@ -70,7 +70,7 @@ class CustomerController extends Controller
     public function open()
     {
         $customers = User::where('role', 'customer')->get();
-        return Inertia::render('agent/Customers', ['customers' => $customers]);
+        return Inertia::render('agent/Customer', ['customers' => $customers]);
     }
 
     public function generate()

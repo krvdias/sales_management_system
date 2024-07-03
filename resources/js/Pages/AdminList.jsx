@@ -8,6 +8,7 @@ export default function AdminList({ auth, admins }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [search, setSearch] = useState('');
     const [address, setAddress] = useState('');
 
     const handleEdit = (admin) => {
@@ -34,6 +35,10 @@ export default function AdminList({ auth, admins }) {
         Inertia.delete(route('AdminList.delete', adminId));
     };
 
+    const filtereAdmin = admins.filter(admin =>
+        admin.name.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
         <AdminLayout
             user={auth.user}
@@ -45,6 +50,26 @@ export default function AdminList({ auth, admins }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        
+                            <div className="flex justify-between mb-6">
+                                <h1 className="text-3xl font-bold text-white">Admins</h1>
+                                <div className="flex">
+                                    <input
+                                        type="text"
+                                        placeholder="Admin name .."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="px-4 py-2 border rounded-l-md dark:bg-gray-600 text-white"
+                                    />
+                                    <button
+                                        type="button" // Ensure type is set to "button" to prevent form submission
+                                        className="px-4 py-2 bg-yellow-600 text-white rounded-r-md"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                            
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead className="bg-gray-50 dark:bg-gray-700">
                                     <tr className="text-center">
@@ -69,8 +94,9 @@ export default function AdminList({ auth, admins }) {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    {admins.map((admin) => (
-                                        admin.id === editAdminId ? (
+                                    {filtereAdmin.map((admin) => (
+                                        <React.Fragment key={admin.id}>
+                                        {admin.id === editAdminId ? (
                                             <tr key={admin.id} className="text-center">
                                                 <td className="px-6 py-4 whitespace-nowrap">{admin.id}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -136,7 +162,8 @@ export default function AdminList({ auth, admins }) {
                                                     </button>
                                                 </td>
                                             </tr>
-                                        )
+                                        )}
+                                        </React.Fragment>
                                     ))}
                                 </tbody>
                             </table>

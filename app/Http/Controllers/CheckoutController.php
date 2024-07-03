@@ -41,8 +41,6 @@ class CheckoutController extends Controller
             'invoiceNumber' => 'string | required'
         ]);
 
-        
-
         $item = session()->get('cart', []);
         $items = array_values($item);
         $userId = Auth::id();
