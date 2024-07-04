@@ -189,7 +189,8 @@ export default function AdminLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
-                        
+                        <SideNavLink href={route("orders.indexs")}>Orders</SideNavLink>
+                        <SideNavLink href={route("orders.indexs")}>Orders</SideNavLink>
                         <SideNavLink href="Reports">Reports</SideNavLink>
                     </nav>
                 </aside>

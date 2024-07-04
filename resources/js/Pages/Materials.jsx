@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
-import { Inertia, Link } from '@inertiajs/inertia';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function MaterialList({ auth, materials }) {
     const [search, setSearch] = useState('');
     const [quantities, setQuantities] = useState({});
 
-    const filteredMaterials = materials.filter(material =>
-        material.name.toLowerCase().includes(search.toLowerCase())
-    );
+    // Filter materials based on search input and status
+    const filteredMaterials = materials
+        .filter(material => material.name.toLowerCase().includes(search.toLowerCase()))
+        .filter(material => material.status == 'available'); // Ensure status is not empty
 
-    const handleAddToCart = (material) => {
-        const quantity = quantities[material.id] || 1;
-        Inertia.post(route('cart.add', { material_id: material.id, quantity }));
-    };
+
+        const handleAddToCart = (material) => {
+            const quantity = quantities[material.id] || 1;
+            if (material.quantity < quantity) {
+                alert(`We have only ${material.quantity} units of ${material.name}`);
+                return;
+            }
+            Inertia.post(route('cart.add', { material_id: material.id, quantity }));
+        };
 
     const handleAddToCheckout = (material) => {
         const quantity = quantities[material.id] || 1;
+        if (material.quantity < quantity) {
+            alert(`We have only ${material.quantity} units of ${material.name}`);
+            return;
+        }
         Inertia.get(route('checkout.add', { material_id: material.id, quantity }));
     };
-    
 
     const handleQuantityChange = (material_id, newQuantity) => {
         setQuantities(prevQuantities => ({
@@ -61,7 +70,7 @@ export default function MaterialList({ auth, materials }) {
                                 />
                                 <h2 className="text-2xl font-bold">{material.name}</h2>
                                 <p className="mt-2 text-gray-600">{material.description}</p>
-                                <p className="mt-2 text-red-500 font-bold">Rs.{material.price} .00</p>
+                                <p className="mt-2 text-red-500 font-bold">Rs.{material.price}.00</p>
                                 <div className="mt-2">
                                     <label className="block text-gray-700">Quantity:</label>
                                     <input

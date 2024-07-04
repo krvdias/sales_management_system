@@ -26,7 +26,7 @@ export default function MaterialList({ auth, materials }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        Inertia.post(route('MaterialList.edit', editMaterialId), {
+        Inertia.post(route('MaterialList.edits', editMaterialId), {
             name,
             category,
             description,
@@ -40,7 +40,7 @@ export default function MaterialList({ auth, materials }) {
     };
 
     const handleDelete = (materialId) => {
-        Inertia.delete(route('MaterialList.delete', materialId));
+        Inertia.delete(route('MaterialList.deletes', materialId));
     };
 
     const getImageUrl = (imagePath) => {

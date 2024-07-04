@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
-import AgentLayout from '@/Layouts/AgentLayout';
+import AdminLayout from '@/Layouts/AdminLayout';
 
 const OrderView = ({ auth, orders}) => {
     const [editOrderId, setEditOrderId] = useState(null);
@@ -17,7 +17,7 @@ const OrderView = ({ auth, orders}) => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        Inertia.post(route('orders.update', editOrderId), {
+        Inertia.post(route('orders.updates', editOrderId), {
             status,
         }).then(() => {
             setEditOrderId(null);
@@ -25,7 +25,7 @@ const OrderView = ({ auth, orders}) => {
     };
 
     const fetchOrderItems = (order) => {
-        Inertia.get(route('agent/orders.items', order))
+        Inertia.get(route('orders.item', order))
             .then(data => {
                 setOrderItems(data);
             });
@@ -45,7 +45,7 @@ const OrderView = ({ auth, orders}) => {
     );
 
     return (
-        <AgentLayout
+        <AdminLayout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Order Management</h2>}
         >
@@ -169,7 +169,7 @@ const OrderView = ({ auth, orders}) => {
                     </div>
                 </div>
             </div>
-        </AgentLayout>
+        </AdminLayout>
     );
 };
 
