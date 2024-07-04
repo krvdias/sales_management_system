@@ -12,6 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\BillerController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -88,6 +89,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/AddMaterial', [MaterialController::class, 'store'])->name('AddMaterial.store');
     Route::post('/MaterialList/{material}', [MaterialController::class, 'edit'])->name('MaterialList.edit');
     Route::delete('/MaterialList/{material}', [MaterialController::class, 'delete'])->name('MaterialList.delete');
+
+    //orders
+    Route::get('/orders', [OrderController::class, 'indexs'])->name('orders.indexs');
+    Route::get('/orders/{order}', [OrderController::class, 'getItems'])->name('orders.item');
+    Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.updates');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -111,9 +117,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('agent/MaterialList/{material}', [MaterialController::class, 'edits'])->name('MaterialList.edits');
     Route::delete('agent/MaterialList/{material}', [MaterialController::class, 'deletes'])->name('MaterialList.deletes');
 
-    Route::get('/orders', [OrderController::class, 'index'])->name('agent/orders.index');
-    Route::get('/orders/{order}', [OrderController::class, 'getOrderItems'])->name('agent/orders.items');
-    Route::post('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.update');
+    Route::get('agent/orders', [OrderController::class, 'index'])->name('agent/orders.index');
+    Route::get('agent/orders/{order}', [OrderController::class, 'getOrderItems'])->name('agent/orders.items');
+    Route::post('agent/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.update');
+
+    Route::get('bill/{invoiceNo}', [BillerController::class, 'search'])->name('bill.search');
 });
 
 

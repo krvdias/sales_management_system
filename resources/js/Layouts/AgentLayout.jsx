@@ -162,6 +162,7 @@ export default function AgentLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
+                        <SideNavLink href="">Billing</SideNavLink>
                         <SideNavLink href={route("agent/orders.index")}>Orders</SideNavLink>
                         <SideNavLink href="Reports">Reports</SideNavLink>
                     </nav>

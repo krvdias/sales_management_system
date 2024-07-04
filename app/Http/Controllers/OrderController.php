@@ -44,6 +44,10 @@ class OrderController extends Controller
         $storeQuantity -= $request->input('quantity');
         $material->update(['quantity' => $storeQuantity]);
 
+        if ($storeQuantity == 0 || $storeQuantity < 0) {
+            $material->update(['status' => 'empty']);
+        }
+
         return redirect()->route('checkout.success');
     }
 
@@ -51,26 +55,23 @@ class OrderController extends Controller
         return Inertia::render('CheckoutSuccess');
     }
 
+    //for agent
     public function index()
     {
         $orders = Order::all();
 
-        return Inertia::render('agent/OrderView', ['orders' => $orders]);
+        return Inertia::render('agent/OrderView', [
+            'orders' => $orders, 
+        ]);
     }
 
     public function getOrderItems(Order $order)
     {
         $orderItems = OrderItem::where('order_id', $order->id)->get();
 
-        return $orderItems->map(function ($orderItem) {
-            return [
-                'id' => $orderItem->id,
-                'product_name' => $orderItem->material_id, // Example: Assuming there's a product relationship
-                'quantity' => $orderItem->quantity,
-                'unit_price' => $orderItem->unit_price,
-                'total_price' => $orderItem->total_price,
-            ];
-        });
+        return Inertia::render('agent/OrderView', [
+            'orderItems' => $orderItems
+        ]);
     }
 
     public function updateStatus(Request $request,Order $order)
@@ -82,5 +83,35 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('agent/orders.index')->with('message', 'Order status updated successfully');
+    }
+
+    //for admin
+    public function indexs()
+    {
+        $orders = Order::all();
+
+        return Inertia::render('ViewOrder', [
+            'orders' => $orders, 
+        ]);
+    }
+
+    public function getItems(Order $order)
+    {
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
+
+        return Inertia::render('ViewOrder', [
+            'orderItems' => $orderItems
+        ]);
+    }
+
+    public function update(Request $request,Order $order)
+    {
+        // Validate the request
+
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('orders.indexs')->with('message', 'Order status updated successfully');
     }
 }
