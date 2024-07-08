@@ -13,13 +13,13 @@ export default function AgentLayout({ user, header, children }) {
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
                             
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('agent/dashboard')} active={route().current('agent/dashboard')}>
-                                    Dashboard
+                                    AGENT DASHBOARD
                                 </NavLink>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ export default function AgentLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
-                        <SideNavLink href="">Billing</SideNavLink>
+                        <SideNavLink href={route("bill.view")}>Billing</SideNavLink>
                         <SideNavLink href={route("agent/orders.index")}>Orders</SideNavLink>
                         <SideNavLink href="Reports">Reports</SideNavLink>
                     </nav>

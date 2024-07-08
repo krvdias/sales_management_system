@@ -13,6 +13,12 @@ export default function MaterialList({ auth, materials }) {
     const [image, setImage] = useState(null);
     const [status, setStatus] = useState('');
 
+    const categories = [
+        'Build', 'Wood and Timber', 'Metals', 'Roof', 'Insulation', 'Flooring', 
+        'Finishes', 'Plumbing', 'Electrical', 'Fasteners', 'Glass', 'Landscaping', 
+        'Doors and Window', 'Fixtures and Fittings'
+    ];
+
     const handleEdit = (material) => {
         setEditMaterialId(material.id);
         setName(material.name);
@@ -76,13 +82,16 @@ export default function MaterialList({ auth, materials }) {
                                                     placeholder="Name"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                 />
-                                                <input
-                                                    type="text"
+                                                <select
                                                     value={category}
                                                     onChange={(e) => setCategory(e.target.value)}
-                                                    placeholder="Category"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                />
+                                                >
+                                                    <option value="">Select a category</option>
+                                                    {categories.map(category => (
+                                                        <option key={category} value={category}>{category}</option>
+                                                    ))}
+                                                </select>
                                                 <textarea
                                                     value={description}
                                                     onChange={(e) => setDescription(e.target.value)}

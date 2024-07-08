@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is a user.
+     * Check if the user is a customer.
      *
      * @return bool
      */
@@ -57,6 +57,10 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
