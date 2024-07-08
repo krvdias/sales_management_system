@@ -3,12 +3,10 @@ import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AdminLayout from '@/Layouts/AdminLayout';
 
-const OrderView = ({ auth, orders}) => {
+const OrderView = ({ auth, orders }) => {
     const [editOrderId, setEditOrderId] = useState(null);
-    const [viewOrderId, setViewOrderId] = useState(null);
     const [status, setStatus] = useState('');
     const [search, setSearch] = useState('');
-    const [orderItem, setOrderItem] = useState([]);
 
     const handleEdit = (order) => {
         setEditOrderId(order.id);
@@ -24,20 +22,8 @@ const OrderView = ({ auth, orders}) => {
         });
     };
 
-    const fetchOrderItems = (order) => {
-        Inertia.get(route('orders.item', order))
-            .then(data => {
-                setOrderItems(data);
-            });
-    };
-
     const handleViewItems = (order) => {
-        if (viewOrderId === order.id) {
-            setViewOrderId(null); // Collapse the items if already viewed
-        } else {
-            setViewOrderId(order.id);
-            fetchOrderItems(order);
-        }
+        Inertia.get(route('orders.item', order.id))
     };
 
     const filteredOrders = orders.filter(order =>
@@ -66,7 +52,7 @@ const OrderView = ({ auth, orders}) => {
                                         className="px-4 py-2 border rounded-l-md dark:bg-gray-600 text-white"
                                     />
                                     <button
-                                        type="button" // Ensure type is set to "button" to prevent form submission
+                                        type="button"
                                         className="px-4 py-2 bg-yellow-600 text-white rounded-r-md"
                                     >
                                         Search
@@ -89,7 +75,7 @@ const OrderView = ({ auth, orders}) => {
                                         <React.Fragment key={order.id}>
                                             <tr className="text-center">
                                                 <td className="px-6 py-4 whitespace-nowrap text-white">#{order.invoice_no}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-white">{order.user_id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{order.user.name}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-white">Rs.{order.total_amount} .00</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-white">{order.payment}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-white">
@@ -132,35 +118,6 @@ const OrderView = ({ auth, orders}) => {
                                                     )}
                                                 </td>
                                             </tr>
-                                            {order.id === viewOrderId && (
-                                                <tr>
-                                                    <td colSpan="6">
-                                                        <div className="p-4">
-                                                            <h2 className="text-xl font-semibold mb-2 text-white">Order Items</h2>
-                                                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                                                <thead className="bg-gray-50 dark:bg-gray-700">
-                                                                    <tr className="text-center">
-                                                                        <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Material Name</th>
-                                                                        <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Quantity</th>
-                                                                        <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Unit Price</th>
-                                                                        <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Total Price</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                                                    {orderItem.map((item) => (
-                                                                        <tr key={item.id} className="text-center">
-                                                                            <td className="px-6 py-4 whitespace-nowrap text-white">{item.material_}</td>
-                                                                            <td className="px-6 py-4 whitespace-nowrap text-white">{item.quantity}</td>
-                                                                            <td className="px-6 py-4 whitespace-nowrap text-white">Rs.{item.unit_price}.00</td>
-                                                                            <td className="px-6 py-4 whitespace-nowrap text-white">Rs.{item.total_price}.00</td>
-                                                                        </tr>
-                                                                    ))}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            )}
                                         </React.Fragment>
                                     ))}
                                 </tbody>

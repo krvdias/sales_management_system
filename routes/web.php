@@ -14,6 +14,7 @@ use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
 use Inertia\Inertia;
+use App\Models\User;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -60,7 +61,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', function () {
         if (Auth::user()->role === 'admin') {
-            return Inertia::render('admin/Dashboard'); // Assuming your admin dashboard is located in resources/js/pages/admin/Dashboard.jsx
+            return Inertia::render('admin/Dashboard', [
+                'customerCount' => User::where('role', 'customer')->count(), 
+                'adminCount' => User::where('role', 'admin')->count(),
+                'agentCount' => User::where('role', 'agent')->count()
+            ]); 
         }
     })->name('admin/dashboard');
 
@@ -100,7 +105,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/agent/dashboard', function () {
         if (Auth::user()->role === 'agent') 
         {
-            return Inertia::render('agent/Dashboard'); 
+            return Inertia::render('agent/Dashboard', [
+                'customerCount' => User::where('role', 'customer')->count(), 
+                'agentCount' => User::where('role', 'agent')->count()
+            ]); 
         }
     })->name('agent/dashboard');
 
@@ -122,6 +130,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('agent/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.update');
 
     Route::get('bill/{invoiceNo}', [BillerController::class, 'search'])->name('bill.search');
+    Route::get('bill', [BillerController::class, 'view'])->name('bill.view');
 });
 
 

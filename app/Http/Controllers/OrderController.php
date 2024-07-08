@@ -58,7 +58,7 @@ class OrderController extends Controller
     //for agent
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::with('user')->get();
 
         return Inertia::render('agent/OrderView', [
             'orders' => $orders, 
@@ -67,9 +67,9 @@ class OrderController extends Controller
 
     public function getOrderItems(Order $order)
     {
-        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        $orderItems = OrderItem::where('order_id', $order->id)->with('material')->get();
 
-        return Inertia::render('agent/OrderView', [
+        return Inertia::render('agent/OrderItemView', [
             'orderItems' => $orderItems
         ]);
     }
@@ -88,7 +88,7 @@ class OrderController extends Controller
     //for admin
     public function indexs()
     {
-        $orders = Order::all();
+        $orders = Order::with('user')->get();
 
         return Inertia::render('ViewOrder', [
             'orders' => $orders, 
@@ -97,9 +97,10 @@ class OrderController extends Controller
 
     public function getItems(Order $order)
     {
-        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        $orderItems = OrderItem::where('order_id', $order->id)->with('material')->get();
 
-        return Inertia::render('ViewOrder', [
+        
+        return Inertia::render('ViewOrderItems', [
             'orderItems' => $orderItems
         ]);
     }

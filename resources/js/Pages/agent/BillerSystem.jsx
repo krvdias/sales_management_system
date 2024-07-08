@@ -8,7 +8,7 @@ export default function BillerSystem({ auth }) {
     const [totalPayment, setTotalPayment] = useState(null);
     const [amountPaid, setAmountPaid] = useState('');
     const [balance, setBalance] = useState(null);
-    //const [paymentStatus, setPaymentStatus] = useState('');
+    const [error, setError] = useState('');
 
     const handleInvoiceSearch = (e) => {
         e.preventDefault();
@@ -16,12 +16,15 @@ export default function BillerSystem({ auth }) {
         Inertia.get(route('bill.search', invoiceNo))
             .then(response => {
                 console.log('Invoice search response:', response);
-                const { total_amount } = response.data;
-                setTotalPayment(total_amount);
-                setBalance(null);
+                const { total_amount } = response.data; // Ensure response data structure matches
+                setTotalPayment(parseFloat(total_amount)); // Update totalPayment state
+                setBalance(null); // Reset balance state
+                setInvoiceNo(''); // Reset input field
+                setError(''); // Clear any previous errors
             })
             .catch(error => {
                 console.error('Error searching invoice:', error);
+                setError('Invoice not found or error fetching data.'); // Set error message
             });
     };
 
@@ -30,9 +33,13 @@ export default function BillerSystem({ auth }) {
         console.log(`Processing payment: ${amountPaid}`);
         const paid = parseFloat(amountPaid);
         const total = parseFloat(totalPayment);
+        if (isNaN(paid) || paid <= 0) {
+            setError('Please enter a valid amount.');
+            return;
+        }
         if (paid >= total) {
             alert('Payment Successful');
-            setBalance(paid - total);
+            setBalance((paid - total).toFixed(2)); // Ensure balance is formatted to 2 decimal places
         } else {
             alert('Insufficient Payment');
             setBalance(null);
@@ -67,7 +74,7 @@ export default function BillerSystem({ auth }) {
                             {totalPayment !== null && (
                                 <>
                                     <div className="mb-6 text-white">
-                                        <h3 className="text-2xl">Total Payment: Rs.{totalPayment}.00</h3>
+                                        <h3 className="text-2xl">Total Payment: Rs.{totalPayment.toFixed(2)}</h3>
                                     </div>
                                     <form onSubmit={handlePayment}>
                                         <label htmlFor="amountPaid" className="block text-white mb-2">Amount Paid:</label>
@@ -85,15 +92,15 @@ export default function BillerSystem({ auth }) {
 
                                     {balance !== null && (
                                         <div className="mt-6 text-white">
-                                            <h3 className="text-2xl">Balance: Rs.{balance}.00</h3>
+                                            <h3 className="text-2xl">Balance: Rs.{balance}</h3>
                                         </div>
                                     )}
 
-                                    {/*{paymentStatus && (
-                                        <div className="mt-6 text-white">
-                                            <h3 className="text-2xl">{paymentStatus}</h3>
+                                    {error && (
+                                        <div className="mt-6 text-red-600">
+                                            <p>{error}</p>
                                         </div>
-                                    )}*/}
+                                    )}
                                 </>
                             )}
                         </div>

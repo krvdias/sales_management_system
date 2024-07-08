@@ -17,6 +17,12 @@ export default function AddMaterial({ auth }) {
         image: null,
     });
 
+    const categories = [
+        'Build', 'Wood and Timber', 'Metals', 'Roof', 'Insulation', 'Flooring', 
+        'Finishes', 'Plumbing', 'Electrical', 'Fasteners', 'Glass', 'Landscaping', 
+        'Doors and Window', 'Fixtures and Fittings'
+    ];
+
     const submit = (e) => {
         e.preventDefault();
         post(route('AddMaterial.stores'));
@@ -51,15 +57,19 @@ export default function AddMaterial({ auth }) {
 
                                 <div className="mt-4">
                                     <InputLabel htmlFor="category" value="Category" className="text-white" />
-                                    <TextInput
+                                    <select
                                         id="category"
                                         name="category"
                                         value={data.category}
                                         className="mt-1 block w-full dark:bg-gray-700 text-gray-200"
-                                        autoComplete="category"
                                         onChange={(e) => setData('category', e.target.value)}
                                         required
-                                    />
+                                    >
+                                        <option value="">Select a category</option>
+                                        {categories.map(category => (
+                                            <option key={category} value={category}>{category}</option>
+                                        ))}
+                                    </select>
                                     <InputError message={errors.category} className="mt-2" />
                                 </div>
 

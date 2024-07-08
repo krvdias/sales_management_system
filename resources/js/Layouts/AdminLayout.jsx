@@ -13,13 +13,13 @@ export default function AdminLayout({ user, header, children }) {
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
             <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 shadow-lg">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-10">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
                             
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex text-gray-500 font-xl">
                                 <NavLink href={route('admin/dashboard')} active={route().current('admin/dashboard')}>
-                                    Dashboard
+                                    ADMIN DASHBOARD
                                 </NavLink>
                             </div>
                         </div>
@@ -31,7 +31,7 @@ export default function AdminLayout({ user, header, children }) {
                                         {user.name}
                                         <svg
                                             className="ml-2 h-5 w-5"
-                                            xmlns="http://www.w3.org/2000/svg"
+                                            
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
                                         >
@@ -189,7 +189,7 @@ export default function AdminLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
-                        <SideNavLink href={route("orders.indexs")}>Orders</SideNavLink>
+                        
                         <SideNavLink href={route("orders.indexs")}>Orders</SideNavLink>
                         <SideNavLink href="Reports">Reports</SideNavLink>
                     </nav>

@@ -60,7 +60,7 @@ class CheckoutController extends Controller
         $totalAmount = 0;
 
         foreach ($items as $item) {
-        
+            
             $totalItemPrice = $item['unit_price']* $item['quantity'];
 
             OrderItem::create([
@@ -72,6 +72,18 @@ class CheckoutController extends Controller
             ]);
 
             $totalAmount += $totalItemPrice;
+
+            $material = Material::find($item['material_id']);
+            $storeQuantity = $material->quantity;
+            $storeQuantity -= $item['quantity'];
+
+            $material->update(['quantity' => $storeQuantity]);
+
+            if ($storeQuantity == 0 || $storeQuantity < 0) {
+                $material->update(['status' => 'empty']);
+            }
+            
+            $storeQuantity = 0;
         }
 
         $order->update(['total_amount' => $totalAmount]);
