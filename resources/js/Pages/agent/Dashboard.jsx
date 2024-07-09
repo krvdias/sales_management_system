@@ -6,7 +6,7 @@ import { Head } from '@inertiajs/react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-export default function AgentDashboard({ auth, customerCount, agentCount }) {
+export default function AgentDashboard({ auth, customers, admins, agents }) {
     const [date, setDate] = useState(new Date());
 
     return (
@@ -26,12 +26,15 @@ export default function AgentDashboard({ auth, customerCount, agentCount }) {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div className="p-4 bg-blue-100 dark:bg-blue-900 rounded-lg shadow-md">
                                     <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Total Customers</h3>
-                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{customerCount}</p>
+                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{customers}</p>
                                 </div>
-                                
+                                <div className="p-4 bg-green-100 dark:bg-green-900 rounded-lg shadow-md">
+                                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Total Admins</h3>
+                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{admins}</p>
+                                </div>
                                 <div className="p-4 bg-purple-100 dark:bg-purple-900 rounded-lg shadow-md">
                                     <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Total Agents</h3>
-                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{agentCount}</p>
+                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{agents}</p>
                                 </div>
                             </div>
                         </div>

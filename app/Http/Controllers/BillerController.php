@@ -10,16 +10,29 @@ class BillerController extends Controller
 {
     public function search($invoiceNo)
     {
-        $order = Order::where('invoice_no', $invoiceNo)->first(); // Use first() to get a single instance
+        $order = Order::where('invoice_no', $invoiceNo)->first(); 
         
         if ($order) {
-            $totalamount = $order->pluck('total_amount');
-
-            return Inertia::render('agent/BillerSystem', [
-                'total_amount' => $totalamount
+            return Inertia::render('agent/Bill', [
+                'order' => $order,
             ]);
-        } 
+        } else {
+            return redirect()->route('Bill.view')->with('error', 'Order not found.');
+        }
     }
+
+    public function updatePaymentStatus ( $invoice_no)
+    {
+        $order = Order::where('invoice_no', $invoice_no)->first();
+
+        if ($order) {
+            $order->update(['status' => 'success']);
+            return redirect()->route('Bill.view')->with('success', 'Payment status updated successfully.');
+        } else {
+            return redirect()->route('Bill.view')->with('error', 'Order not found.');
+        }
+    }
+
 
 
     public function view()

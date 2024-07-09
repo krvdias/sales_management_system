@@ -25,6 +25,7 @@ export default function AdminLayout({ user, header, children }) {
                         </div>
 
                         <div className="hidden sm:flex sm:items-center">
+                            
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <button className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
