@@ -13,7 +13,8 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = User::where('role', 'admin')->get();
+        $admins = User::where('role', 'admin')->where('id', '!=', 2)->get();
+        
         return Inertia::render('AdminList', ['admins' => $admins]);
     }
 

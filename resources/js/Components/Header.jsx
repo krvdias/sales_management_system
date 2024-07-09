@@ -13,9 +13,7 @@ export default function Header({ auth }) {
         <header className="bg-white shadow-md">
             <div className="container mx-auto flex justify-between items-center p-6">
                 <img
-                    src="https://laravel.com/img/logotype.min.svg"
-                    alt="Laravel Logo"
-                    className="h-8"
+                    
                 />
                 <nav className="flex space-x-6">
                     <Link href="/">Home</Link>

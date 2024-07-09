@@ -106,8 +106,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if (Auth::user()->role === 'agent') 
         {
             return Inertia::render('agent/Dashboard', [
-                'customerCount' => User::where('role', 'customer')->count(), 
-                'agentCount' => User::where('role', 'agent')->count()
+                'customers' => User::where('role', 'customer')->count(), 
+                'admins' => User::where('role', 'admin')->count(),
+                'agents' => User::where('role', 'agent')->count()
             ]); 
         }
     })->name('agent/dashboard');
@@ -131,6 +132,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('bill/{invoiceNo}', [BillerController::class, 'search'])->name('bill.search');
     Route::get('bill', [BillerController::class, 'view'])->name('bill.view');
+    Route::get('bill/update/{invoiceNo}', [BillerController::class, 'updatePaymentStatus'])->name('bill.update');
+
 });
 
 
