@@ -17,7 +17,7 @@ class BillerController extends Controller
                 'order' => $order,
             ]);
         } else {
-            return redirect()->route('Bill.view')->with('error', 'Order not found.');
+            return redirect()->route('bill.view')->with('error', 'Order not found.');
         }
     }
 
@@ -27,9 +27,9 @@ class BillerController extends Controller
 
         if ($order) {
             $order->update(['status' => 'success']);
-            return redirect()->route('Bill.view')->with('success', 'Payment status updated successfully.');
+            return redirect()->route('bill.view')->with('success', 'Payment status updated successfully.');
         } else {
-            return redirect()->route('Bill.view')->with('error', 'Order not found.');
+            return redirect()->route('bill.view')->with('error', 'Order not found.');
         }
     }
 

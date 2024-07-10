@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
-import AdminLayout from '@/Layouts/AdminLayout';
+import AgentLayout from '@/Layouts/AgentLayout';
 
 export default function MaterialList({ auth, materials }) {
     const [editMaterialId, setEditMaterialId] = useState(null);
@@ -12,6 +12,7 @@ export default function MaterialList({ auth, materials }) {
     const [price, setPrice] = useState('');
     const [image, setImage] = useState(null);
     const [status, setStatus] = useState('');
+    const [search, setSearch] = useState('');
 
     const categories = [
         'Build', 'Wood and Timber', 'Metals', 'Roof', 'Insulation', 'Flooring', 
@@ -46,15 +47,21 @@ export default function MaterialList({ auth, materials }) {
     };
 
     const handleDelete = (materialId) => {
+        if(window.confirm("Do you want to delete this material ?")) {
         Inertia.delete(route('MaterialList.deletes', materialId));
+        }
     };
 
     const getImageUrl = (imagePath) => {
         return imagePath ? `/Uploads/Materials/${imagePath}` : 'default-image-path.png';
     };
 
+    const filtereMaterial = materials.filter(material =>
+        material.name.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
-        <AdminLayout
+        <AgentLayout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Material Management</h2>}
         >
@@ -64,8 +71,28 @@ export default function MaterialList({ auth, materials }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+
+                            <div className="flex justify-between mb-6">
+                                <h1 className="text-3xl font-bold text-white">Materials</h1>
+                                <div className="flex">
+                                    <input
+                                        type="text"
+                                        placeholder="Material name .."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        className="px-4 py-2 border rounded-l-md dark:bg-gray-600 text-white"
+                                    />
+                                    <button
+                                        type="button" // Ensure type is set to "button" to prevent form submission
+                                        className="px-4 py-2 bg-yellow-600 text-white rounded-r-md"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                                {materials.map((material) => (
+                                {filtereMaterial.map((material) => (
                                     <div key={material.id} className="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6">
                                         {material.id === editMaterialId ? (
                                             <div className="flex flex-col items-center">
@@ -161,6 +188,6 @@ export default function MaterialList({ auth, materials }) {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </AgentLayout>
     );
 }

@@ -32,7 +32,9 @@ export default function AdminList({ auth, admins }) {
     };
 
     const handleDelete = (adminId) => {
+        if(window.confirm("Do you want to delete this admin ?")) {
         Inertia.delete(route('AdminList.delete', adminId));
+        }
     };
 
     const filtereAdmin = admins.filter(admin =>

@@ -3,12 +3,17 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import SideNavLink from '@/Components/SideNavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-
+import NotificationIcon from '@/Components/NotificationIcon';
 
 export default function AgentLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showCustomersDropdown, setShowCustomersDropdown] = useState(false);
     const [showMaterialsDropdown, setShowMaterialsDropdown] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+
+    const handleClearNotifications = () => {
+        setNotifications([]);
+    };
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
@@ -25,6 +30,9 @@ export default function AgentLayout({ user, header, children }) {
                         </div>
 
                         <div className="hidden sm:flex sm:items-center">
+                            <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex px-6 ">
+                            <NotificationIcon notifications={notifications} setNotifications={setNotifications} />
+                            </div>
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <button className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">

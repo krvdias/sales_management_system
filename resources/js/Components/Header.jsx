@@ -10,19 +10,22 @@ export default function Header({ auth }) {
         `text-gray-800 ${url === path ? 'border-b-2 border-blue-600' : ''}`;
 
     return (
-        <header className="bg-white shadow-md">
+        <header className="bg-gray-400 shadow-md fixed top-0 left-0 w-full z-50">
             <div className="container mx-auto flex justify-between items-center p-6">
                 <img
-                    
+                    src="/Uploads/Other/SGPmaterials.png"
+                    alt="Logo"
+                    className="w-full rounded-lg"
+                    style={{ maxWidth: '13%', maxHeight: '40px' }}
                 />
                 <nav className="flex space-x-6">
-                    <Link href="/">Home</Link>
-                    <Link href={route('Materials.show')} >Materials</Link>
+                    <Link href="/" className='font-bold'>Home</Link>
+                    <Link href={route('Materials.show')} className='font-bold'>Materials</Link>
                     {auth.user && (
-                        <Link href={route('cart.index')} >Cart</Link>
+                        <Link href={route('cart.index')} className='font-bold'>Cart</Link>
                     )}
-                    <Link href={route('Contacts.view')} >Contact Us</Link>
-                    <Link href={route('About.index')} >About Us</Link>
+                    <Link href={route('Contacts.view')} className='font-bold'>Contact Us</Link>
+                    <Link href={route('About.index')} className='font-bold'>About Us</Link>
                 </nav>
                 <div className="hidden sm:flex sm:items-center sm:ml-6">
                     {auth.user ? (
@@ -103,13 +106,13 @@ export default function Header({ auth }) {
 
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                 <div className="pt-2 pb-3 space-y-1">
-                    <Link href="/" >Home</Link>
-                    <Link href={route('Materials.show')} >Materials</Link>
+                    <Link href="/" className='font-bold'>Home</Link>
+                    <Link href={route('Materials.show')} className='font-bold'>Materials</Link>
                     {auth.user && (
-                        <Link href={route('cart.index')} >Cart</Link>
+                        <Link href={route('cart.index')} className='font-bold'>Cart</Link>
                     )}
-                    <Link href={route('Contacts.view')} >Contact Us</Link>
-                    <Link href={route('About.index')}>About Us</Link>
+                    <Link href={route('Contacts.view')} className='font-bold'>Contact Us</Link>
+                    <Link href={route('About.index')} className='font-bold'>About Us</Link>
                 </div>
                 {auth.user && (
                     <div className="pt-4 pb-1 border-t border-gray-200">

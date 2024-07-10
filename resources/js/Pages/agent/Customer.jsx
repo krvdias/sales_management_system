@@ -21,7 +21,7 @@ export default function CustomerList({ auth, customers }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        Inertia.post(route('CustomerList.update', editCustomerId), {
+        Inertia.post(route('agent/Customers.regene', editCustomerId), {
             name,
             email,
             phone,
@@ -32,8 +32,9 @@ export default function CustomerList({ auth, customers }) {
     };
 
     const handleDelete = (customerId) => {
-        
+        if(window.confirm("Do you want to delete this customer ?")) {
         Inertia.delete(route('CustomerList.destroy', customerId));
+        }
     };
 
     const filtereCustomer = customers.filter(customer =>

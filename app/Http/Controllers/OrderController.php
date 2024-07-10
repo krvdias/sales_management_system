@@ -8,6 +8,7 @@ use App\Models\OrderItem;
 use App\Models\Material;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -58,7 +59,10 @@ class OrderController extends Controller
     //for agent
     public function index()
     {
-        $orders = Order::with('user')->get();
+        $orders = Order::with('user')->get()->map(function($order) {
+            $order->order_date = Carbon::parse($order->created_at)->format('Y-m-d');
+            return $order;
+        });
 
         return Inertia::render('agent/OrderView', [
             'orders' => $orders, 
@@ -88,11 +92,18 @@ class OrderController extends Controller
     //for admin
     public function indexs()
     {
-        $orders = Order::with('user')->get();
+        //$orders = Order::with('user')->get();
 
-        return Inertia::render('ViewOrder', [
+        /*return Inertia::render('ViewOrder', [
             'orders' => $orders, 
-        ]);
+        ]);*/
+
+        $orders = Order::with('user')->get()->map(function($order) {
+            $order->order_date = Carbon::parse($order->created_at)->format('Y-m-d');
+            return $order;
+        });
+    
+        return Inertia::render('ViewOrder', ['orders' => $orders]);
     }
 
     public function getItems(Order $order)

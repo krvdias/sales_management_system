@@ -10,57 +10,64 @@ export default function About({ auth }) {
             <Head title="About" />
             <div className="min-h-screen bg-gray-100 text-gray-800">
                 <Header auth={auth} />
-                <main className="py-12">
+                <main className="pt-24">
                     <div className="container mx-auto px-6 lg:px-8">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center lg:items-start">
                                 <img
-                                    src="https://laravel.com/img/logotype.min.svg"
-                                    alt="Laravel Logo"
-                                    className="h-12 mb-4"
+                                    
                                 />
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    About Us
-                                </h2>
-                                <p className="text-gray-700 mt-3">
-                                    Learn more about our team and our mission to deliver top-notch web applications using Laravel and other modern web technologies.
-                                </p>
+                               
                                 <div className="mt-6 flex justify-center">
-                                    <Link
-                                        href="/contact"
-                                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-                                    >
-                                        Contact Us
-                                    </Link>
+                                   
                                 </div>
                             </div>
                             <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center lg:items-start">
                                 <img
-                                    src="https://laravel.com/img/logotype.min.svg"
-                                    alt="Laravel Logo"
-                                    className="h-12 mb-4"
+                                    
                                 />
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    Our Values
-                                </h2>
-                                <p className="text-gray-700 mt-3">
-                                    Discover the core values that drive our team to achieve excellence in every project we undertake.
-                                </p>
+                                
                                 <div className="mt-6 flex justify-center">
-                                    <Link
-                                        href="/services"
-                                        className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-                                    >
-                                        Our Services
-                                    </Link>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                 </main>
-                <footer className="bg-white p-6 text-center shadow-md">
-                    <div className="text-gray-800 text-sm">
-                        &copy; 2024 Your Company. All rights reserved.
+                <br/>
+                <footer className="bg-gray-500 text-white py-6">
+                    <div className="container mx-auto px-6 lg:px-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            {/* Contact Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Phone :</h3>
+                                    <i className="fas fa-phone"></i>
+                                    <span>+94 111223330</span>
+                                </div>
+                            </div>
+
+                            {/* WeChat and Fax Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Fax :</h3>
+                                    <i className="fab fa-weixin"></i>
+                                    <span>+94 111223331</span>
+                                </div>
+                            </div>
+
+                            {/* Email Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Email :</h3>
+                                    <i className="fas fa-envelope"></i>
+                                    <span>info@hardware.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Social Media Icons */}
+                        
                     </div>
                 </footer>
             </div>

@@ -7,6 +7,7 @@ const OrderView = ({ auth, orders }) => {
     const [editOrderId, setEditOrderId] = useState(null);
     const [status, setStatus] = useState('');
     const [search, setSearch] = useState('');
+    const [sortOrder, setSortOrder] = useState('newer');
 
     const handleEdit = (order) => {
         setEditOrderId(order.id);
@@ -26,7 +27,19 @@ const OrderView = ({ auth, orders }) => {
         Inertia.get(route('agent/orders.items', order.id))
     };
 
-    const filteredOrders = orders.filter(order =>
+    const handleSortChange = (e) => {
+        setSortOrder(e.target.value);
+    };
+
+    const sortedOrders = [...orders].sort((a, b) => {
+        if (sortOrder === 'newer') {
+            return new Date(b.order_date) - new Date(a.order_date);
+        } else {
+            return new Date(a.order_date) - new Date(b.order_date);
+        }
+    });
+
+    const filteredOrders = sortedOrders.filter(order =>
         order.invoice_no.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -43,7 +56,16 @@ const OrderView = ({ auth, orders }) => {
                         <div className="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                             <div className="flex justify-between mb-6">
                                 <h1 className="text-3xl font-bold text-white">Orders</h1>
-                                <div className="flex">
+                                <div className="flex items-center gap-3">
+                                    <select
+                                        value={sortOrder}
+                                        onChange={handleSortChange}
+                                        className="ml-4 px-6 py-2 border rounded-md dark:bg-gray-600 text-white"
+                                    >
+                                        <option value="newer">Newest</option>
+                                        <option value="older">Oldest</option>
+                                    </select>
+                                    <div>
                                     <input
                                         type="text"
                                         placeholder="Invoice_No without '#' .."
@@ -57,6 +79,7 @@ const OrderView = ({ auth, orders }) => {
                                     >
                                         Search
                                     </button>
+                                    </div>
                                 </div>
                             </div>
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -67,6 +90,7 @@ const OrderView = ({ auth, orders }) => {
                                         <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Total Amount</th>
                                         <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Payment Method</th>
                                         <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Payment Status</th>
+                                        <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Order Date</th>
                                         <th className="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
@@ -92,6 +116,7 @@ const OrderView = ({ auth, orders }) => {
                                                         <span>{order.status}</span>
                                                     )}
                                                 </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{order.order_date}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     {order.id === editOrderId ? (
                                                         <button

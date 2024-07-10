@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import NotificationIcon from '@/Components/NotificationIcon';
 
 export default function AddAdmin({ auth }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -15,6 +16,8 @@ export default function AddAdmin({ auth }) {
         address: '',
         role: '',
     });
+
+    
 
     const submit = (e) => {
         e.preventDefault();
