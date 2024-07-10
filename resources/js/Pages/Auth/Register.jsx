@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -16,6 +16,8 @@ export default function Register() {
         address: '',
     });
 
+    const [passwordMismatch, setPasswordMismatch] = useState('');
+
     useEffect(() => {
         return () => {
             reset('password', 'password_confirmation');
@@ -25,6 +27,12 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
+        if (data.password !== data.password_confirmation) {
+            setPasswordMismatch('Passwords do not match');
+            return;
+        }
+
+        setPasswordMismatch('');
         post(route('register'));
     };
 
@@ -33,9 +41,10 @@ export default function Register() {
             <Head title="Register" />
 
             <form onSubmit={submit} className="bg-gray-900 px-4 py-8 rounded-lg shadow-md">
+                <h1 className="text-3xl font-bold text-white mb-6 text-center">Register</h1>
+                
                 <div>
                     <InputLabel htmlFor="name" value="Name" className="text-white" />
-
                     <TextInput
                         id="name"
                         name="name"
@@ -46,13 +55,11 @@ export default function Register() {
                         onChange={(e) => setData('name', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.name} className="mt-2 text-red-500" />
                 </div>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="email" value="Email" className="text-white" />
-
                     <TextInput
                         id="email"
                         type="email"
@@ -63,13 +70,11 @@ export default function Register() {
                         onChange={(e) => setData('email', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.email} className="mt-2 text-red-500" />
                 </div>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Password" className="text-white" />
-
                     <TextInput
                         id="password"
                         type="password"
@@ -80,13 +85,11 @@ export default function Register() {
                         onChange={(e) => setData('password', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.password} className="mt-2 text-red-500" />
                 </div>
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" className="text-white" />
-
                     <TextInput
                         id="password_confirmation"
                         type="password"
@@ -98,6 +101,7 @@ export default function Register() {
                         required
                     />
                     <InputError message={errors.password_confirmation} className="mt-2 text-red-500" />
+                    {passwordMismatch && <div className="mt-2 text-red-500">{passwordMismatch}</div>}
                 </div>
 
                 <div className="mt-4">
@@ -125,7 +129,6 @@ export default function Register() {
                         onChange={(e) => setData('address', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.address} className="mt-2 text-red-500" />
                 </div>
 

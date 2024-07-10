@@ -32,7 +32,9 @@ export default function CustomerList({ auth, customers }) {
     };
 
     const handleDelete = (customerId) => {
+        if(window.confirm("Do you want to delete this customer?")) {
         Inertia.delete(route('CustomerList.destroy', customerId));
+        }
     };
 
     const filtereCustomer = customers.filter(customer =>

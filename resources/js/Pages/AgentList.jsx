@@ -32,7 +32,9 @@ export default function AgentList({ auth, agents }) {
     };
 
     const handleDelete = (agentId) => {
+        if(window.confirm("Do you want to delete this agent ?")) {
         Inertia.delete(route('AgentList.del', agentId));
+        }
     };
 
     const filtereAgent = agents.filter(agent =>

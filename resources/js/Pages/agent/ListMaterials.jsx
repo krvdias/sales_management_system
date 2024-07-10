@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
-import AdminLayout from '@/Layouts/AdminLayout';
+import AgentLayout from '@/Layouts/AgentLayout';
 
 export default function MaterialList({ auth, materials }) {
     const [editMaterialId, setEditMaterialId] = useState(null);
@@ -46,7 +46,9 @@ export default function MaterialList({ auth, materials }) {
     };
 
     const handleDelete = (materialId) => {
+        if(window.confirm("Do you want to delete this material ?")) {
         Inertia.delete(route('MaterialList.deletes', materialId));
+        }
     };
 
     const getImageUrl = (imagePath) => {
@@ -54,7 +56,7 @@ export default function MaterialList({ auth, materials }) {
     };
 
     return (
-        <AdminLayout
+        <AgentLayout
             user={auth.user}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Material Management</h2>}
         >
@@ -161,6 +163,6 @@ export default function MaterialList({ auth, materials }) {
                     </div>
                 </div>
             </div>
-        </AdminLayout>
+        </AgentLayout>
     );
 }

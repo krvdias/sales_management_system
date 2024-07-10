@@ -46,7 +46,9 @@ export default function MaterialList({ auth, materials }) {
     };
 
     const handleDelete = (materialId) => {
+        if(window.confirm("Do you want to delete this material ?")) {
         Inertia.delete(route('MaterialList.delete', materialId));
+        }
     };
 
     const getImageUrl = (imagePath) => {

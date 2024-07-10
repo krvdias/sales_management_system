@@ -10,7 +10,7 @@ const Bill = ({ auth, order }) => {
     const [error, setError] = useState('');
 
     const handleUpdateStatus = (invoice_no) => {
-        Inertia.post(route('bill.update', invoice_no));
+        Inertia.get(route('bill.update', invoice_no));
     };
 
     const handlePayment = (e) => {

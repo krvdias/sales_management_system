@@ -15,6 +15,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Order;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -64,7 +65,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('admin/Dashboard', [
                 'customerCount' => User::where('role', 'customer')->count(), 
                 'adminCount' => User::where('role', 'admin')->count(),
-                'agentCount' => User::where('role', 'agent')->count()
+                'agentCount' => User::where('role', 'agent')->count(),
+                'orderCount' => Order::count(),
+                'totalIncome' => Order::where('status', 'success')->sum('total_amount'),
+                'pendingIncome' => Order::where('status', 'pending')->sum('total_amount'),
             ]); 
         }
     })->name('admin/dashboard');
@@ -108,7 +112,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return Inertia::render('agent/Dashboard', [
                 'customers' => User::where('role', 'customer')->count(), 
                 'admins' => User::where('role', 'admin')->count(),
-                'agents' => User::where('role', 'agent')->count()
+                'agents' => User::where('role', 'agent')->count(),
+                'orders' => Order::count(),
+                'totalIncome' => Order::where('status', 'success')->sum('total_amount'),
+                'pendingIncome' => Order::where('status', 'pending')->sum('total_amount'),
             ]); 
         }
     })->name('agent/dashboard');

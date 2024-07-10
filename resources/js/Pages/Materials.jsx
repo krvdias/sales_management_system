@@ -47,7 +47,7 @@ export default function MaterialList({ auth, materials }) {
     return (
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
-            <main className="py-12">
+            <main className="pt-24">
                 <div className="container mx-auto px-6 lg:px-8 flex">
                     <aside className="w-1/6 pr-6">
                         <h2 className="text-xl font-bold mb-4">Categories</h2>
@@ -132,6 +132,42 @@ export default function MaterialList({ auth, materials }) {
                     </div>
                 </div>
             </main>
+            <br/>
+            <footer className="bg-gray-500 text-white py-6">
+                    <div className="container mx-auto px-6 lg:px-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            {/* Contact Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Phone :</h3>
+                                    <i className="fas fa-phone"></i>
+                                    <span>+94 111223330</span>
+                                </div>
+                            </div>
+
+                            {/* WeChat and Fax Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Fax :</h3>
+                                    <i className="fab fa-weixin"></i>
+                                    <span>+94 111223331</span>
+                                </div>
+                            </div>
+
+                            {/* Email Section */}
+                            <div className="flex flex-col space-y-4">
+                                <div className="flex items-center space-x-2">
+                                    <h3>Email :</h3>
+                                    <i className="fas fa-envelope"></i>
+                                    <span>info@hardware.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Social Media Icons */}
+                        
+                    </div>
+                </footer>
         </div>
     );
 }
