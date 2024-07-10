@@ -1,8 +1,11 @@
 import React from 'react';
 import Header from '../Components/Header';
+import { Link, Head } from '@inertiajs/react';
 
 export default function CheckoutSuccess({ auth }) {
     return (
+        <>
+        <Head title="Success" />
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
             <main className="pt-24">
@@ -59,5 +62,6 @@ export default function CheckoutSuccess({ auth }) {
                     </div>
                 </footer>
         </div>
+        </>
     );
 }

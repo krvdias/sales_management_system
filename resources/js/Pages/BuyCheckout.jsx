@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Header from '../Components/Header';
+import { Link, Head } from '@inertiajs/react';
 
 export default function BuyCheckout({ auth, material, quantity }) {
     const [invoiceNumber, setInvoiceNumber] = useState('');
@@ -64,6 +65,8 @@ export default function BuyCheckout({ auth, material, quantity }) {
     );
 
     return (
+        <>
+        <Head title="Invoice" />
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
             <main className="pt-24">
@@ -228,5 +231,6 @@ export default function BuyCheckout({ auth, material, quantity }) {
                     </div>
                 </footer>
         </div>
+        </>
     );
 }

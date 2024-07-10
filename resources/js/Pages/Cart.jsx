@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import Header from '../Components/Header';
-import { Link } from '@inertiajs/react';
+import { Link, Head } from '@inertiajs/react';
 
 export default function CartPage({ auth, cartItems }) {
     const [items, setItems] = useState([]);
@@ -31,6 +31,8 @@ export default function CartPage({ auth, cartItems }) {
     };
 
     return (
+        <>
+            <Head title="Cart" />
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
             <main className="pt-24">
@@ -172,5 +174,6 @@ export default function CartPage({ auth, cartItems }) {
                     </div>
                 </footer>
         </div>
+        </>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../Components/Header';
 import { Inertia } from '@inertiajs/inertia';
+import { Link, Head } from '@inertiajs/react';
 
 export default function MaterialList({ auth, materials }) {
     const [search, setSearch] = useState('');
@@ -45,6 +46,8 @@ export default function MaterialList({ auth, materials }) {
     };
 
     return (
+        <>
+        <Head title="Materials" />
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
             <main className="pt-24">
@@ -169,5 +172,6 @@ export default function MaterialList({ auth, materials }) {
                     </div>
                 </footer>
         </div>
+        </>
     );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { Link } from '@inertiajs/react';
+import { Link, Head } from '@inertiajs/react';
 import Header from '../Components/Header';
 
 export default function CartCheckout({ auth, orderItems }) {
@@ -62,6 +62,8 @@ export default function CartCheckout({ auth, orderItems }) {
     );
 
     return (
+        <>
+        <Head title="Invoice" />
         <div className="min-h-screen bg-gray-100 text-gray-800">
             <Header auth={auth} />
             <main className="pt-24">
@@ -238,5 +240,6 @@ export default function CartCheckout({ auth, orderItems }) {
                     </div>
                 </footer>
         </div>
+        </>
     );
 }

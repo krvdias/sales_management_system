@@ -21,7 +21,7 @@ export default function CustomerList({ auth, customers }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        Inertia.post(route('CustomerList.update', editCustomerId), {
+        Inertia.post(route('agent/Customers.regene', editCustomerId), {
             name,
             email,
             phone,
@@ -32,12 +32,12 @@ export default function CustomerList({ auth, customers }) {
     };
 
     const handleDelete = (customerId) => {
-        if (window.confirm("Do you want to delete this customer?")) {
-            Inertia.delete(route('customer.delete', customerId)); // Replace 'customer.delete' with your actual delete route name
+        if(window.confirm("Do you want to delete this customer ?")) {
+        Inertia.delete(route('CustomerList.destroy', customerId));
         }
     };
 
-    const filteredCustomers = customers.filter(customer =>
+    const filtereCustomer = customers.filter(customer =>
         customer.name.toLowerCase().includes(search.toLowerCase())
     );
 
@@ -96,28 +96,76 @@ export default function CustomerList({ auth, customers }) {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    {filteredCustomers.map((customer) => (
-                                        <tr key={customer.id} className="text-center">
-                                            <td className="px-6 py-4 whitespace-nowrap text-white">{customer.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-white">{customer.name}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-white">{customer.email}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-white">{customer.phone}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-white">{customer.address}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <button
-                                                    onClick={() => handleEdit(customer)}
-                                                    className="inline-flex items-center px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:ring focus:ring-yellow-200 active:bg-yellow-600 disabled:opacity-25 transition"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(customer.id)}
-                                                    className="inline-flex items-center ml-2 px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
+                                    {filtereCustomer.map((customer) => (
+                                        <React.Fragment key={customer.id}>
+                                        {customer.id === editCustomerId ? (
+                                            <tr key={customer.id} className="text-center">
+                                                <td className="px-6 py-4 whitespace-nowrap">{customer.id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <input
+                                                        type="text"
+                                                        value={name}
+                                                        onChange={(e) => setName(e.target.value)}
+                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <input
+                                                        type="email"
+                                                        value={email}
+                                                        onChange={(e) => setEmail(e.target.value)}
+                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <input
+                                                        type="text"
+                                                        value={phone}
+                                                        onChange={(e) => setPhone(e.target.value)}
+                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <input
+                                                        type="text"
+                                                        value={address}
+                                                        onChange={(e) => setAddress(e.target.value)}
+                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <button
+                                                        onClick={handleUpdate}
+                                                        className="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-600 disabled:opacity-25 transition"
+                                                    >
+                                                        Update
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            <tr key={customer.id} className="text-center">
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{customer.id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{customer.name}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{customer.email}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{customer.phone}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-white">{customer.address}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <button
+                                                        onClick={() => handleEdit(customer)}
+                                                        className="inline-flex items-center px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:ring focus:ring-yellow-200 active:bg-yellow-600 disabled:opacity-25 transition"
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(customer.id)}
+                                                        className="inline-flex items-center ml-2 px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 focus:outline-none focus:border-red-700 focus:ring focus:ring-red-200 active:bg-red-600 disabled:opacity-25 transition"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )}
+                                        </React.Fragment>
                                     ))}
                                 </tbody>
                             </table>
@@ -127,4 +175,4 @@ export default function CustomerList({ auth, customers }) {
             </div>
         </AgentLayout>
     );
-}
+};
