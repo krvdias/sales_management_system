@@ -17,11 +17,20 @@ export default function CartCheckout({ auth, orderItems }) {
             const randomPart = Math.floor(Math.random() * 1000000); // 6 digit random number
             return `${randomPart}`;
         };
-        setInvoiceNumber(generateInvoiceNumber());
+
+        const savedInvoiceNumber = localStorage.getItem('invoiceNumber');
+        if (savedInvoiceNumber) {
+            setInvoiceNumber(savedInvoiceNumber);
+        } else {
+            const newInvoiceNumber = generateInvoiceNumber();
+            setInvoiceNumber(newInvoiceNumber);
+            localStorage.setItem('invoiceNumber', newInvoiceNumber);
+        }
     }, []);
 
     const handleCheckout = () => {
         Inertia.post(route('checkout.store', { invoiceNumber, paymentMethod} ));
+        localStorage.removeItem('invoiceNumber');
     };
 
     const calculateTotal = () => {
@@ -171,7 +180,7 @@ export default function CartCheckout({ auth, orderItems }) {
                                 />
                                 <label htmlFor="bank" className="text-gray-700">Bank Transfer</label>
                             </div>
-                            <div className="flex items-center mb-2">
+                            {/*<div className="flex items-center mb-2">
                                 <input
                                     type="radio"
                                     id="card"
@@ -182,7 +191,7 @@ export default function CartCheckout({ auth, orderItems }) {
                                     className="mr-2"
                                 />
                                 <label htmlFor="card" className="text-gray-700">Card</label>
-                            </div>
+                            </div>*/}
                             {paymentMethod === 'Bank' && bankTransferContent} {/* Conditionally render bank transfer content */}
                             {paymentMethod === 'Card' && cardPaymentContent}
                         </div>

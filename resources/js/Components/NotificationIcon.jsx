@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-export default function NotificationIcon() {
-    const [notifications, setNotifications] = useState([
-        { message: 'New material added.' },
-        { message: 'Material items are empty.' },
-        { message: 'New customer login.' },
-    ]);
+export default function NotificationIcon({ notifications, setNotifications }) {
     const [showDropdown, setShowDropdown] = useState(false);
+
+    const handleClearNotifications = () => {
+        setNotifications([]);
+    };
 
     return (
         <div className="relative">
@@ -36,6 +35,12 @@ export default function NotificationIcon() {
                                 </div>
                             ))
                         )}
+                        <button
+                            onClick={handleClearNotifications}
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                        >
+                            Clear All
+                        </button>
                     </div>
                 </div>
             )}

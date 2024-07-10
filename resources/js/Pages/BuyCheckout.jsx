@@ -12,7 +12,15 @@ export default function BuyCheckout({ auth, material, quantity }) {
             const randomPart = Math.floor(Math.random() * 1000000); // 6 digit random number
             return `${randomPart}`;
         };
-        setInvoiceNumber(generateInvoiceNumber());
+
+        const savedInvoiceNumber = localStorage.getItem('invoiceNumber');
+        if (savedInvoiceNumber) {
+            setInvoiceNumber(savedInvoiceNumber);
+        } else {
+            const newInvoiceNumber = generateInvoiceNumber();
+            setInvoiceNumber(newInvoiceNumber);
+            localStorage.setItem('invoiceNumber', newInvoiceNumber);
+        }
     }, []);
 
     const handlePlaceOrder = () => {
@@ -29,6 +37,7 @@ export default function BuyCheckout({ auth, material, quantity }) {
             invoiceNumber,
             paymentMethod
         });
+        localStorage.removeItem('invoiceNumber');
     };
 
     const cardPaymentContent = (
@@ -170,7 +179,7 @@ export default function BuyCheckout({ auth, material, quantity }) {
                                 />
                                 <label htmlFor="bank" className="text-gray-700">Bank Transfer</label>
                             </div>
-                            <div className="flex items-center mb-2">
+                            {/*<div className="flex items-center mb-2">
                                 <input
                                     type="radio"
                                     id="card"
@@ -181,9 +190,11 @@ export default function BuyCheckout({ auth, material, quantity }) {
                                     className="mr-2"
                                 />
                                 <label htmlFor="card" className="text-gray-700">Card</label>
-                            </div>
+                            </div>*/}
                             {paymentMethod === 'Bank' && bankTransferContent} {/* Conditionally render bank transfer content */}
                             {paymentMethod === 'Card' && cardPaymentContent}
+                            
+                            
                         </div>
                         <button
                             className="w-full bg-green-600 text-white py-2 px-4 rounded"
