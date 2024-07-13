@@ -7,6 +7,7 @@ export default function CartCheckout({ auth, orderItems }) {
     const [items, setItems] = useState([]);
     const [invoiceNumber, setInvoiceNumber] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
+    const [isDelivery, setIsDelivery] = useState(false);
 
     useEffect(() => {
         setItems(orderItems);
@@ -28,8 +29,16 @@ export default function CartCheckout({ auth, orderItems }) {
         }
     }, []);
 
+    const deliveryCharge = isDelivery ? 500 : 0; 
+
     const handleCheckout = () => {
-        Inertia.post(route('checkout.store', { invoiceNumber, paymentMethod} ));
+        const totalPrice = calculateTotal() + deliveryCharge;
+        Inertia.post(route('checkout.store'), {
+            invoiceNumber,
+            paymentMethod,
+            deliveryCharge,
+            totalPrice
+        });
         localStorage.removeItem('invoiceNumber');
     };
 
@@ -146,13 +155,24 @@ export default function CartCheckout({ auth, orderItems }) {
                                 <span className="text-lg font-bold">Rs.{calculateTotal()} .00</span>
                             </div>
                         </div>
-                        <div className="flex justify-between mb-6">
-                            <span className="text-lg font-bold">Delevary :</span>
-                            <span className="text-lg font-bold">Free</span>
-                        </div>
+                        <div className="flex items-center mb-4">
+                                <input
+                                    type="checkbox"
+                                    id="delivery"
+                                    name="delivery"
+                                    checked={isDelivery}
+                                    onChange={(e) => setIsDelivery(e.target.checked)}
+                                    className="mr-2"
+                                />
+                                <label htmlFor="delivery" className="text-gray-700">Add Delivery (Rs.500.00)</label>
+                            </div>
+                            <div className="flex justify-between mb-6">
+                                <span className="text-lg font-bold">Delivery :</span>
+                                <span className="text-lg font-bold">Rs.{isDelivery ? 500 : 0}.00</span>
+                            </div>
                         <div className="flex justify-between mb-6">
                             <span className="text-xl font-bold">Total :</span>
-                            <span className="text-red-700 font-bold text-xl">Rs.{calculateTotal()} .00</span>
+                            <span className="text-red-700 font-bold text-xl">Rs.{calculateTotal() + deliveryCharge} .00</span>
                         </div>
                         <div className="mb-6">
                             <h2 className="text-xl font-bold mb-2">Payment Method</h2>

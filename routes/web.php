@@ -13,9 +13,30 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Order;
+
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.request');
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware('guest')
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.reset');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware('guest')
+    ->name('password.update');
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -132,6 +153,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('agent/AddMaterial', [MaterialController::class, 'stores'])->name('AddMaterial.stores');
     Route::post('agent/MaterialList/{material}', [MaterialController::class, 'edits'])->name('MaterialList.edits');
     Route::delete('agent/MaterialList/{material}', [MaterialController::class, 'deletes'])->name('MaterialList.deletes');
+    
 
     Route::get('agent/orders', [OrderController::class, 'index'])->name('agent/orders.index');
     Route::get('agent/orders/{order}', [OrderController::class, 'getOrderItems'])->name('agent/orders.items');
@@ -149,6 +171,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/test-email', function () {
+    Mail::raw('This is a test email', function ($message) {
+        $message->to('k.r.v.dias@gmail.com')
+                ->subject('Test Email');
+    });
+    return 'Email sent!';
 });
 
 require __DIR__.'/auth.php';

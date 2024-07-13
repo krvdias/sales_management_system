@@ -5,7 +5,8 @@ import { Link, Head } from '@inertiajs/react';
 
 export default function BuyCheckout({ auth, material, quantity }) {
     const [invoiceNumber, setInvoiceNumber] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('Cash');
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [isDelivery, setIsDelivery] = useState(false);
 
     useEffect(() => {
         const generateInvoiceNumber = () => {
@@ -23,19 +24,23 @@ export default function BuyCheckout({ auth, material, quantity }) {
         }
     }, []);
 
+    const deliveryCharge = isDelivery ? 500 : 0; 
+
     const handlePlaceOrder = () => {
         console.log('Placing order with:', {
             material_id: material.id,
             quantity,
             invoiceNumber,
-            paymentMethod
+            paymentMethod,
+            deliveryCharge,
         });
 
         Inertia.post(route('checkout.place'), {
             material_id: material.id,
             quantity,
             invoiceNumber,
-            paymentMethod
+            paymentMethod,
+            deliveryCharge,   
         });
         localStorage.removeItem('invoiceNumber');
     };
@@ -73,6 +78,7 @@ export default function BuyCheckout({ auth, material, quantity }) {
         </div>
     );
 
+    
     return (
         <>
         <Head title="Invoice" />
@@ -144,13 +150,24 @@ export default function BuyCheckout({ auth, material, quantity }) {
                                 <span className="text-lg font-bold">Subtotal :</span>
                                 <span className="text-lg font-bold">Rs.{material.price * quantity}.00</span>
                             </div>
+                            <div className="flex items-center mb-4">
+                                <input
+                                    type="checkbox"
+                                    id="delivery"
+                                    name="delivery"
+                                    checked={isDelivery}
+                                    onChange={(e) => setIsDelivery(e.target.checked)}
+                                    className="mr-2"
+                                />
+                                <label htmlFor="delivery" className="text-gray-700">Add Delivery (Rs.500.00)</label>
+                            </div>
                             <div className="flex justify-between mb-6">
                                 <span className="text-lg font-bold">Delivery :</span>
-                                <span className="text-lg font-bold">Rs.50.00</span>
+                                <span className="text-lg font-bold">Rs.{isDelivery ? 500 : 0}.00</span>
                             </div>
                             <div className="flex justify-between mb-6">
                                 <span className="text-xl font-bold">Total :</span>
-                                <span className="text-red-700 font-bold text-xl">Rs.{material.price * quantity + 50}.00</span>
+                                <span className="text-red-700 font-bold text-xl">Rs.{material.price * quantity + deliveryCharge}.00</span>
                             </div>
                         </div>
                         <div className="mb-6">

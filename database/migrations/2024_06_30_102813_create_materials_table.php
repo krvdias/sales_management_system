@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('description')->nullable();
             $table->string('price');
+            $table->string('buy_price');
             $table->string('quantity')->nullable();
             $table->string('image')->nullable();
             $table->enum('status', ['available', 'empty'])->default('available');

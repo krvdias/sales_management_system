@@ -22,6 +22,7 @@ class MaterialFactory extends Factory
             'description' => $this->faker->sentence(),
             'quantity' => $this->faker->numberBetween(1, 100),
             'price' => $this->faker->randomFloat(2, 10, 1000),
+            'buy_price' => $this->faker->randomFloat(2, 10, 1000),
             'image' => $this->faker->imageUrl(),
         ];
     }

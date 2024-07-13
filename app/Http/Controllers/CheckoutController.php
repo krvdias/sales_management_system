@@ -8,6 +8,9 @@ use App\Models\OrderItem;
 use App\Models\Material;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvoiceMail2;
+
 
 class CheckoutController extends Controller
 {
@@ -38,7 +41,9 @@ class CheckoutController extends Controller
     {
         $request->validate([
             'paymentMethod' => 'required',
-            'invoiceNumber' => 'string | required'
+            'invoiceNumber' => 'string | required',
+            'deliveryCharge' => 'required',
+            'totalPrice' => 'required|numeric',
         ]);
 
         $item = session()->get('cart', []);
@@ -85,10 +90,18 @@ class CheckoutController extends Controller
             
             $storeQuantity = 0;
         }
+        
+        $totalAmount += $request->input('deliveryCharge');
 
         $order->update(['total_amount' => $totalAmount]);
 
         session()->forget('cart');
+
+        $deliveryCharge = $request->deliveryCharge;
+        $auth = Auth::user()->name;
+
+         // Send the email
+        Mail::to(Auth::user()->email)->send(new InvoiceMail2($auth, $order, $items, $totalAmount, $deliveryCharge));
 
         return redirect()->route('checkout.success');
     }

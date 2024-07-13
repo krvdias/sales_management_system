@@ -10,6 +10,7 @@ export default function MaterialList({ auth, materials }) {
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
+    const [buy_price, setBuyPrice] = useState('');
     const [image, setImage] = useState(null);
     const [status, setStatus] = useState('');
     const [search, setSearch] = useState('');
@@ -27,6 +28,7 @@ export default function MaterialList({ auth, materials }) {
         setDescription(material.description);
         setQuantity(material.quantity);
         setPrice(material.price);
+        setBuyPrice(material.buy_price);
         setImage(material.image);
         setStatus(material.status);
     };
@@ -39,6 +41,7 @@ export default function MaterialList({ auth, materials }) {
             description,
             quantity,
             price,
+            buy_price,
             image,
             status,
         }).then(() => {
@@ -139,6 +142,13 @@ export default function MaterialList({ auth, materials }) {
                                                     placeholder="Price"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                 />
+                                                <input
+                                                    type="text"
+                                                    value={buy_price}
+                                                    onChange={(e) => setBuyPrice(e.target.value)}
+                                                    placeholder="Buy Price"
+                                                    className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                />
                                                 <select
                                                     value={status}
                                                     onChange={(e) => setStatus(e.target.value)}
@@ -163,6 +173,7 @@ export default function MaterialList({ auth, materials }) {
                                                     <p><strong>Description:</strong> {material.description}</p>
                                                     <p><strong>Quantity:</strong> {material.quantity}</p>
                                                     <p><strong>Price: Rs.</strong> {material.price} .00</p>
+                                                    <p><strong>Buy Price: Rs.</strong> {material.buy_price} .00</p>
                                                     <p><strong>Status:</strong> {material.status}</p>
                                                     <div className="mt-4 flex justify-center">
                                                         <button

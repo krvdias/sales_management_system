@@ -20,6 +20,7 @@ class Material extends Model
         'description',
         'quantity',
         'price',
+        'buy_price',
         'image',
         'status',
     ];
