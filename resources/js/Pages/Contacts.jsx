@@ -13,7 +13,19 @@ export default function Contact({ auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/contact');
+        post('/contact', {
+            onSuccess: () => {
+                setData({
+                    name: '',
+                    email: '',
+                    message: ''
+                });
+                alert('Your message has been sent successfully!');
+            },
+            onError: () => {
+                alert('There was an error sending your message. Please try again.');
+            }
+        });
     };
 
     return (

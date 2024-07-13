@@ -96,7 +96,7 @@ export default function CartPage({ auth, cartItems }) {
                                     href={route('Materials.show')}
                                     className="bg-green-600 text-white py-2 px-4 rounded"
                                 >
-                                    Continue Shopping
+                                    Continue Buying
                                 </Link>
 
                             </div>
@@ -106,10 +106,7 @@ export default function CartPage({ auth, cartItems }) {
                                     <span>Subtotal</span>
                                     <span>Rs.{calculateTotal()} .00</span>
                                 </div>
-                                <div className="flex justify-between mb-2">
-                                    <span>Shipping</span>
-                                    <span>Free</span>
-                                </div>
+                                
                                 <div className="flex justify-between mb-6 text-xl text-red-500 font-bold">
                                     <span>Total</span>
                                     <span>Rs.{calculateTotal()} .00</span>
@@ -130,7 +127,7 @@ export default function CartPage({ auth, cartItems }) {
                                     href={route('Materials.show')}
                                     className="bg-green-600 text-white py-2 px-4 rounded"
                                 >
-                                    Continue Shopping
+                                    Continue Buying
                                 </Link>
                             </div>
                         </div>

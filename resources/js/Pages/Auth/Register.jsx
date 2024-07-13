@@ -16,7 +16,12 @@ export default function Register() {
         address: '',
     });
 
-    const [passwordMismatch, setPasswordMismatch] = useState('');
+    const [customErrors, setCustomErrors] = useState({
+        passwordMismatch: '',
+        nameString: '',
+        phoneNumberInt: '',
+        emailCorrect: '',
+    });
 
     useEffect(() => {
         return () => {
@@ -26,13 +31,30 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
+        const newErrors = {};
 
         if (data.password !== data.password_confirmation) {
-            setPasswordMismatch('Passwords do not match');
+            newErrors.passwordMismatch = 'Passwords do not match';
+        }
+
+        if (!data.name.match(/^[a-zA-Z\s]+$/)) {
+            newErrors.nameString = 'This is not a valid name';
+        }
+
+        if (!data.email.includes('@')) {
+            newErrors.emailCorrect = 'This is not a valid email';
+        }
+
+        if (!data.phone.match(/^\d{10}$/)) {
+            newErrors.phoneNumberInt = 'Phone number must be 10 digits';
+        }
+
+        setCustomErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
             return;
         }
 
-        setPasswordMismatch('');
         post(route('register'));
     };
 
@@ -42,7 +64,7 @@ export default function Register() {
 
             <form onSubmit={submit} className="bg-gray-900 px-4 py-8 rounded-lg shadow-md">
                 <h1 className="text-3xl font-bold text-white mb-6 text-center">Register</h1>
-                
+
                 <div>
                     <InputLabel htmlFor="name" value="Name" className="text-white" />
                     <TextInput
@@ -53,9 +75,11 @@ export default function Register() {
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
+                        placeholder="John Doe"
                         required
                     />
                     <InputError message={errors.name} className="mt-2 text-red-500" />
+                    {customErrors.nameString && <div className="mt-2 text-red-500">{customErrors.nameString}</div>}
                 </div>
 
                 <div className="mt-4">
@@ -68,9 +92,11 @@ export default function Register() {
                         className="mt-1 block w-full bg-gray-800 border-gray-700 focus:border-gray-500 focus:ring-gray-500 text-gray-100"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
+                        placeholder="example@gmail.com"
                         required
                     />
                     <InputError message={errors.email} className="mt-2 text-red-500" />
+                    {customErrors.emailCorrect && <div className="mt-2 text-red-500">{customErrors.emailCorrect}</div>}
                 </div>
 
                 <div className="mt-4">
@@ -83,6 +109,7 @@ export default function Register() {
                         className="mt-1 block w-full bg-gray-800 border-gray-700 focus:border-gray-500 focus:ring-gray-500 text-gray-100"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
+                        placeholder="example123"
                         required
                     />
                     <InputError message={errors.password} className="mt-2 text-red-500" />
@@ -98,10 +125,11 @@ export default function Register() {
                         className="mt-1 block w-full bg-gray-800 border-gray-700 focus:border-gray-500 focus:ring-gray-500 text-gray-100"
                         autoComplete="new-password"
                         onChange={(e) => setData('password_confirmation', e.target.value)}
+                        placeholder="example123"
                         required
                     />
                     <InputError message={errors.password_confirmation} className="mt-2 text-red-500" />
-                    {passwordMismatch && <div className="mt-2 text-red-500">{passwordMismatch}</div>}
+                    {customErrors.passwordMismatch && <div className="mt-2 text-red-500">{customErrors.passwordMismatch}</div>}
                 </div>
 
                 <div className="mt-4">
@@ -113,9 +141,11 @@ export default function Register() {
                         className="mt-1 block w-full bg-gray-800 border-gray-700 focus:border-gray-500 focus:ring-gray-500 text-gray-100"
                         autoComplete="tel"
                         onChange={(e) => setData('phone', e.target.value)}
+                        placeholder="0123456789"
                         required
                     />
                     <InputError message={errors.phone} className="mt-2 text-red-500" />
+                    {customErrors.phoneNumberInt && <div className="mt-2 text-red-500">{customErrors.phoneNumberInt}</div>}
                 </div>
 
                 <div className="mt-4">
@@ -127,6 +157,7 @@ export default function Register() {
                         className="mt-1 block w-full bg-gray-800 border-gray-700 focus:border-gray-500 focus:ring-gray-500 text-gray-100"
                         autoComplete="street-address"
                         onChange={(e) => setData('address', e.target.value)}
+                        placeholder="123 Main St"
                         required
                     />
                     <InputError message={errors.address} className="mt-2 text-red-500" />

@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Material;
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Mail\InvoiceMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LowQuantityNotification; 
 
 class OrderController extends Controller
 {
@@ -18,18 +22,22 @@ class OrderController extends Controller
             'material_id' => 'required|exists:materials,id',
             'quantity' => 'required|integer',
             'paymentMethod' => 'required',
-            'invoiceNumber' => 'string | required'
+            'invoiceNumber' => 'string | required',
+            'deliveryCharge' => 'required'
         ]);
 
         $material = Material::find($request->material_id);
         $quantity = $request->quantity;
-        $totalPrice = $material->price * $quantity;
+        $totalPrice = $material->price * $quantity + $request->deliveryCharge;
         $storeQuantity = $material->quantity;
+        $invoiceNumber = $request->invoiceNumber;
+        $auth = $request->user();
+        
 
         $order = Order::create([
             'invoice_no' => $request->input('invoiceNumber'),
             'user_id' => Auth::id(),
-            'total_amount' => $totalPrice + 50,
+            'total_amount' => $totalPrice,
             'payment' => $request->input('paymentMethod'),
             'status' => 'pending'
         ]);
@@ -39,7 +47,7 @@ class OrderController extends Controller
             'material_id' => $request->input('material_id'),
             'quantity' => $request->input('quantity'),
             'unit_price' => $material->price,
-            'total_price' => $totalPrice + 50,
+            'total_price' => $totalPrice,
         ]);
 
         $storeQuantity -= $request->input('quantity');
@@ -49,7 +57,17 @@ class OrderController extends Controller
             $material->update(['status' => 'empty']);
         }
 
+        if ($material->quantity < 10) { 
+            $this->sendLowQuantityNotification($material);
+        }
+
+        $delevary = $request->deliveryCharge;
+        $payment = $request->input('paymentMethod');
+        // Send email
+        Mail::to($auth->email)->send(new InvoiceMail($auth, $material, $quantity, $invoiceNumber,$delevary, $totalPrice, $payment));
+
         return redirect()->route('checkout.success');
+        
     }
 
     public function success() {
@@ -59,10 +77,7 @@ class OrderController extends Controller
     //for agent
     public function index()
     {
-        $orders = Order::with('user')->get()->map(function($order) {
-            $order->order_date = Carbon::parse($order->created_at)->format('Y-m-d');
-            return $order;
-        });
+        $orders = Order::with('user')->get();
 
         return Inertia::render('agent/OrderView', [
             'orders' => $orders, 
@@ -92,17 +107,8 @@ class OrderController extends Controller
     //for admin
     public function indexs()
     {
-        //$orders = Order::with('user')->get();
+        $orders = Order::with('user')->get();
 
-        /*return Inertia::render('ViewOrder', [
-            'orders' => $orders, 
-        ]);*/
-
-        $orders = Order::with('user')->get()->map(function($order) {
-            $order->order_date = Carbon::parse($order->created_at)->format('Y-m-d');
-            return $order;
-        });
-    
         return Inertia::render('ViewOrder', ['orders' => $orders]);
     }
 
@@ -125,5 +131,14 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('orders.indexs')->with('message', 'Order status updated successfully');
+    }
+
+    private function sendLowQuantityNotification(Material $material)
+    {
+        $adminsAndAgents = User::whereIn('role', ['admin', 'agent'])->get(); 
+
+        foreach ($adminsAndAgents as $user) {
+            Mail::to($user->email)->send(new LowQuantityNotification($material, $user));
+        }
     }
 }

@@ -14,6 +14,7 @@ export default function AddMaterial({ auth }) {
         description: '',
         quantity: '',
         price: '',
+        buy_price: '',
         image: null,
     });
 
@@ -113,6 +114,20 @@ export default function AddMaterial({ auth }) {
                                         required
                                     />
                                     <InputError message={errors.price} className="mt-2" />
+                                </div>
+
+                                <div className="mt-4">
+                                    <InputLabel htmlFor="buy_price" value="Buy_Price" className="text-white" />
+                                    <TextInput
+                                        id="buy_price"
+                                        name="buy_price"
+                                        value={data.buy_price}
+                                        className="mt-1 block w-full dark:bg-gray-700 text-gray-200"
+                                        autoComplete="buy_price"
+                                        onChange={(e) => setData('buy_price', e.target.value)}
+                                        required
+                                    />
+                                    <InputError message={errors.buy_price} className="mt-2" />
                                 </div>
 
                                 <div className="mt-4">

@@ -53,6 +53,7 @@ class MaterialController extends Controller
             'description' => 'required|string|max:255',
             'quantity' => 'required|integer',
             'price' => 'required|numeric',
+            'buy_price' => 'required|numeric',
             'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048', // Ensure max size for security
             'status' => 'string',
         ]);
@@ -72,6 +73,7 @@ class MaterialController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'price' => $request->price,
+            'buy_price' => $request->buy_price,
             'image' => $filename,
         ]);
 
@@ -86,6 +88,7 @@ class MaterialController extends Controller
             'description' => 'required|string|max:255',
             'quantity' => 'required|integer',
             'price' => 'required|numeric',
+            'buy_price' => 'required|numeric',
             'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048', // Ensure max size for security
             'status' => 'string',
         ]);
@@ -105,6 +108,7 @@ class MaterialController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'price' => $request->price,
+            'buy_price' => $request->buy_price,
             'image' => $filename,
         ]);
 
@@ -119,6 +123,7 @@ class MaterialController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'price' => $request->price,
+            'buy_price' => $request->buy_price,
             'status' => $request->status,
         ]);
 
@@ -133,6 +138,7 @@ class MaterialController extends Controller
             'description' => $request->description,
             'quantity' => $request->quantity,
             'price' => $request->price,
+            'buy_price' => $request->buy_price,
             'status' => $request->status,
         ]);
 
@@ -152,4 +158,6 @@ class MaterialController extends Controller
 
         return redirect()->route('MaterialList.creates')->with('success', 'Material deleted successfully.');
     }
+
+    
 }

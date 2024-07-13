@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AdminLayout from '@/Layouts/AdminLayout';
 
+
 export default function MaterialList({ auth, materials }) {
     const [editMaterialId, setEditMaterialId] = useState(null);
     const [name, setName] = useState('');
@@ -10,9 +11,11 @@ export default function MaterialList({ auth, materials }) {
     const [description, setDescription] = useState('');
     const [quantity, setQuantity] = useState('');
     const [price, setPrice] = useState('');
+    const [buy_price, setBuyPrice] = useState('');
     const [image, setImage] = useState(null);
     const [status, setStatus] = useState('');
     const [search, setSearch] = useState('');
+   
 
     const categories = [
         'Build', 'Wood and Timber', 'Metals', 'Roof', 'Insulation', 'Flooring', 
@@ -27,18 +30,38 @@ export default function MaterialList({ auth, materials }) {
         setDescription(material.description);
         setQuantity(material.quantity);
         setPrice(material.price);
+        setBuyPrice(material.buy_price);
         setImage(material.image);
         setStatus(material.status);
     };
 
     const handleUpdate = (e) => {
         e.preventDefault();
+
+        const pricePattern = /^\d+(\.\d{1,2})?$/;
+
+        if (!pricePattern.test(price)) {
+            alert("Please enter a valid price.");
+            return;
+        }
+
+        if (!pricePattern.test(buy_price)) {
+            alert("Please enter a valid buy price.");
+            return;
+        }
+
+        if (!pricePattern.test(quantity)) {
+            alert("Please enter a valid quntity.");
+            return;
+        }
+
         Inertia.post(route('MaterialList.edit', editMaterialId), {
             name,
             category,
             description,
             quantity,
             price,
+            buy_price,
             image,
             status,
         }).then(() => {
@@ -131,6 +154,8 @@ export default function MaterialList({ auth, materials }) {
                                                     onChange={(e) => setQuantity(e.target.value)}
                                                     placeholder="Quantity"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid quantity"
                                                 />
                                                 <input
                                                     type="text"
@@ -138,6 +163,17 @@ export default function MaterialList({ auth, materials }) {
                                                     onChange={(e) => setPrice(e.target.value)}
                                                     placeholder="Price"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid price"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    value={buy_price}
+                                                    onChange={(e) => setBuyPrice(e.target.value)}
+                                                    placeholder="Buy Price"
+                                                    className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid buy price"
                                                 />
                                                 <select
                                                     value={status}
@@ -163,6 +199,7 @@ export default function MaterialList({ auth, materials }) {
                                                     <p><strong>Description:</strong> {material.description}</p>
                                                     <p><strong>Quantity:</strong> {material.quantity}</p>
                                                     <p><strong>Price: Rs.</strong> {material.price} .00</p>
+                                                    <p><strong>Buy Price: Rs.</strong> {material.buy_price} .00</p>
                                                     <p><strong>Status:</strong> {material.status}</p>
                                                     <div className="mt-4 flex justify-center">
                                                         <button
