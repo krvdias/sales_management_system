@@ -23,15 +23,20 @@ export default function AdminLayout({ user, header, children }) {
                 <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-10">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
+<<<<<<< Updated upstream
                             
                             <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex text-white-100 font-xl">
+=======
+
+                            <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex text-gray-500 font-xl">
+>>>>>>> Stashed changes
                                 <NavLink href={route('admin/dashboard')} active={route().current('admin/dashboard')}>
                                     ADMIN DASHBOARD
                                 </NavLink>
                             </div>
                         </div>
 
-                        
+
                         <div className="hidden sm:flex ">
                             <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex px-6 ">
                             <NotificationIcon notifications={notifications} setNotifications={setNotifications} />
@@ -42,7 +47,7 @@ export default function AdminLayout({ user, header, children }) {
                                         {user.name}
                                         <svg
                                             className="ml-2 h-5 w-5"
-                                            
+
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
                                         >
@@ -200,9 +205,9 @@ export default function AdminLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
-                        
+
                         <SideNavLink href={route("orders.indexs")}>Orders</SideNavLink>
-                        <SideNavLink href="Reports">Reports</SideNavLink>
+                        <SideNavLink href={route("reports.index")}>Reports</SideNavLink>
                     </nav>
                 </aside>
                 <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">

@@ -1,18 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomerController;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
-use App\Http\Controllers\MaterialController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
@@ -20,6 +19,14 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Order;
+=======
+use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MaterialController;
+>>>>>>> Stashed changes
 
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
@@ -86,13 +93,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/dashboard', function () {
         if (Auth::user()->role === 'admin') {
             return Inertia::render('admin/Dashboard', [
-                'customerCount' => User::where('role', 'customer')->count(), 
+                'customerCount' => User::where('role', 'customer')->count(),
                 'adminCount' => User::where('role', 'admin')->count(),
                 'agentCount' => User::where('role', 'agent')->count(),
                 'orderCount' => Order::count(),
                 'totalIncome' => Order::where('status', 'success')->sum('total_amount'),
                 'pendingIncome' => Order::where('status', 'pending')->sum('total_amount'),
-            ]); 
+            ]);
         }
     })->name('admin/dashboard');
 
@@ -126,20 +133,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/orders', [OrderController::class, 'indexs'])->name('orders.indexs');
     Route::get('/orders/{order}', [OrderController::class, 'getItems'])->name('orders.item');
     Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.updates');
+
+    //for reports
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/agent/dashboard', function () {
-        if (Auth::user()->role === 'agent') 
+        if (Auth::user()->role === 'agent')
         {
             return Inertia::render('agent/Dashboard', [
-                'customers' => User::where('role', 'customer')->count(), 
+                'customers' => User::where('role', 'customer')->count(),
                 'admins' => User::where('role', 'admin')->count(),
                 'agents' => User::where('role', 'agent')->count(),
                 'orders' => Order::count(),
                 'totalIncome' => Order::where('status', 'success')->sum('total_amount'),
                 'pendingIncome' => Order::where('status', 'pending')->sum('total_amount'),
-            ]); 
+            ]);
         }
     })->name('agent/dashboard');
 
