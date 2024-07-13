@@ -35,6 +35,24 @@ export default function MaterialList({ auth, materials }) {
 
     const handleUpdate = (e) => {
         e.preventDefault();
+
+        const pricePattern = /^\d+(\.\d{1,2})?$/;
+
+        if (!pricePattern.test(price)) {
+            alert("Please enter a valid price.");
+            return;
+        }
+
+        if (!pricePattern.test(buy_price)) {
+            alert("Please enter a valid buy price.");
+            return;
+        }
+
+        if (!pricePattern.test(quantity)) {
+            alert("Please enter a valid quntity.");
+            return;
+        }
+
         Inertia.post(route('MaterialList.edits', editMaterialId), {
             name,
             category,
@@ -134,6 +152,8 @@ export default function MaterialList({ auth, materials }) {
                                                     onChange={(e) => setQuantity(e.target.value)}
                                                     placeholder="Quantity"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid quantity"
                                                 />
                                                 <input
                                                     type="text"
@@ -141,6 +161,8 @@ export default function MaterialList({ auth, materials }) {
                                                     onChange={(e) => setPrice(e.target.value)}
                                                     placeholder="Price"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid price"
                                                 />
                                                 <input
                                                     type="text"
@@ -148,6 +170,8 @@ export default function MaterialList({ auth, materials }) {
                                                     onChange={(e) => setBuyPrice(e.target.value)}
                                                     placeholder="Buy Price"
                                                     className="mt-1 mb-2 block w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:text-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                    pattern="^\d+(\.\d{1,2})?$"
+                                                    title="Please enter a valid buy price"
                                                 />
                                                 <select
                                                     value={status}

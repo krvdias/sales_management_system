@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Material;
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Mail\InvoiceMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\LowQuantityNotification; 
 
 class OrderController extends Controller
 {
@@ -53,6 +55,10 @@ class OrderController extends Controller
 
         if ($storeQuantity == 0 || $storeQuantity < 0) {
             $material->update(['status' => 'empty']);
+        }
+
+        if ($material->quantity < 10) { 
+            $this->sendLowQuantityNotification($material);
         }
 
         $delevary = $request->deliveryCharge;
@@ -125,5 +131,14 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('orders.indexs')->with('message', 'Order status updated successfully');
+    }
+
+    private function sendLowQuantityNotification(Material $material)
+    {
+        $adminsAndAgents = User::whereIn('role', ['admin', 'agent'])->get(); 
+
+        foreach ($adminsAndAgents as $user) {
+            Mail::to($user->email)->send(new LowQuantityNotification($material, $user));
+        }
     }
 }

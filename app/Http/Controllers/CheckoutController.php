@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Material;
+use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail2;
+use App\Mail\LowQuantityNotification2;
 
 
 class CheckoutController extends Controller
@@ -87,6 +89,10 @@ class CheckoutController extends Controller
             if ($storeQuantity == 0 || $storeQuantity < 0) {
                 $material->update(['status' => 'empty']);
             }
+
+            if ($material->quantity < 10) {
+                $lowQuantityMaterials[] = $material;
+            }
             
             $storeQuantity = 0;
         }
@@ -97,6 +103,10 @@ class CheckoutController extends Controller
 
         session()->forget('cart');
 
+        if (!empty($lowQuantityMaterials)) {
+            $this->sendLowQuantityNotification($lowQuantityMaterials);
+        }
+
         $deliveryCharge = $request->deliveryCharge;
         $auth = Auth::user()->name;
 
@@ -104,6 +114,15 @@ class CheckoutController extends Controller
         Mail::to(Auth::user()->email)->send(new InvoiceMail2($auth, $order, $items, $totalAmount, $deliveryCharge));
 
         return redirect()->route('checkout.success');
+    }
+
+    private function sendLowQuantityNotification($lowQuantityMaterials)
+    {
+        $adminsAndAgents = User::whereIn('role', ['admin', 'agent'])->get(); 
+
+        foreach ($adminsAndAgents as $user) {
+            Mail::to($user->email)->send(new LowQuantityNotification2($lowQuantityMaterials, $user));
+        }
     }
 
 }
