@@ -11,22 +11,17 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
-<<<<<<< Updated upstream
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use Illuminate\Support\Facades\Mail;
-use Inertia\Inertia;
-use App\Models\User;
-use App\Models\Order;
-=======
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MaterialController;
->>>>>>> Stashed changes
+
 
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])

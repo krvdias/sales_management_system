@@ -23,13 +23,9 @@ export default function AdminLayout({ user, header, children }) {
                 <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-10">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center">
-<<<<<<< Updated upstream
-                            
-                            <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex text-white-100 font-xl">
-=======
 
                             <div className="space-x-8 sm:-my-px sm:ml-10 sm:flex text-gray-500 font-xl">
->>>>>>> Stashed changes
+
                                 <NavLink href={route('admin/dashboard')} active={route().current('admin/dashboard')}>
                                     ADMIN DASHBOARD
                                 </NavLink>
