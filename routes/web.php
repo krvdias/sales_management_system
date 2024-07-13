@@ -13,6 +13,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use Illuminate\Support\Facades\Mail;
@@ -50,6 +51,7 @@ Route::get('/', function () {
 Route::get('/Materials', [MaterialController::class, 'show'])->name('Materials.show');
 Route::get('/About', [HeaderController::class, 'index'])->name('About.index');
 Route::get('/Contacts', [HeaderController::class, 'view'])->name('Contacts.view');
+Route::post('/contact', [ContactController::class, 'send']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/welcome', function () {

@@ -60,12 +60,12 @@ export default function BuyCheckout({ auth, material, quantity }) {
             <br/>
             <h2 className="text-xl font-bold mb-2">Bank Transfer Instructions</h2>
             <p className="text-gray-700 mb-2">Please transfer the total amount to the following bank account :</p>
-            <p className="text-gray-700 mb-2"><strong>Bank :</strong> ABC Bank</p>
+            <p className="text-gray-700 mb-2"><strong>Bank :</strong> BOC Bank</p>
             <p className="text-gray-700 mb-2"><strong>Account Number :</strong> 1234567890</p>
-            <p className="text-gray-700 mb-2"><strong>Account Name :</strong> Your Name</p>
+            <p className="text-gray-700 mb-2"><strong>Account Name :</strong> SGP Materials</p>
             <br/>
             <p className="text-gray-700 mb-2"><strong>After Bank Transfer Send the Bankslip to our WHATSAPP NUMBER with your INVOICE NUMBER</strong></p>
-            <p className="text-gray-700 mb-2"><strong>Plese Get Screan Shot of the INVOICE before press the "Place Order" Button</strong></p>
+        
             <p className="text-gray-700 mb-2">GET our WHATSAPP NUMBER <strong>Scan the QR CODE</strong> below :</p>
             </div>
             <div>
