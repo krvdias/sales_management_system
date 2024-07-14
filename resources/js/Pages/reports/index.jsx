@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AdminLayout from '@/Layouts/AdminLayout';
+import { Pie, Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
 export default function Reports({
     auth,
     totalOrders,
-    totalIncome,
+    totalSuccess,
     totalPending,
     totalCustomers,
     totalAdmins,
@@ -23,13 +27,120 @@ export default function Reports({
     ordersByStatus,
     averageOrderValue,
     startDate,
-    endDate
-}) {
-    const [reportType, setReportType] = useState('');
+    endDate,
+    totalIncome
+}){
+    const pieData = {
+        labels: salesByCategory.map(category => category.category),
+        datasets: [
+            {
+                label: 'Sales by Category',
+                data: salesByCategory.map(category => category.total_sales),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40',
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40',
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40',
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40',
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                ]
+                
+            }
+        ]
+    };
 
-    const handleGenerateReport = (e) => {
-        e.preventDefault();
-        Inertia.post(route('reports.generate'), { reportType });
+    const barData = {
+        labels: salesByPaymentMethod.map(method => method.payment),
+        datasets: [
+            {
+                label: 'Cash',
+                data: salesByPaymentMethod.map(method => method.total_sales),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ]
+            }
+        ]
+    };
+
+    const barOptions = {
+        scales: {
+            x: {
+                ticks: {
+                    color: 'white' // Change x-axis labels to white
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.2)' // Change x-axis grid lines to a lighter color
+                }
+            },
+            y: {
+                ticks: {
+                    color: 'white' // Change y-axis labels to white
+                },
+                grid: {
+                    color: 'rgba(255, 255, 255, 0.2)' // Change y-axis grid lines to a lighter color
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white' // Change legend labels to white
+                }
+            }
+        }
+    };
+
+    const pieOptions = {
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 14,
+                        //weight: 'bold'
+                    },
+                    color: 'black', // Change label color to black
+                }
+            }
+        }
     };
 
     return (
@@ -56,8 +167,8 @@ export default function Reports({
                                         <p className="text-xl font-bold text-gray-800 dark:text-gray-200">{totalOrders}</p>
                                     </div>
                                     <div className="bg-teal-700 dark:bg-teal-600 p-2 rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Income</h3>
-                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalIncome.toLocaleString()}.00</p>
+                                        <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Success Income</h3>
+                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalSuccess.toLocaleString()}.00</p>
                                     </div>
                                     <div className="bg-teal-700 dark:bg-teal-600 p-2 rounded-lg shadow-md">
                                         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Pending Income</h3>
@@ -82,54 +193,74 @@ export default function Reports({
                             <div className="bg-gray-800 dark:bg-gray-900 rounded-lg shadow-lg p-6 mb-6">
                                 <h2 className="text-2xl font-bold text-gray-100 dark:text-gray-200 mb-6">Sales Reports</h2>
                                 <div className="space-y-6">
+                                    {/* Total Income Card */}
+                                    <div className="bg-teal-700 dark:bg-teal-800 p-4 rounded-lg shadow-md">
+                                        <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Total Income</h3>
+                                        <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalIncome.toLocaleString()}.00</p>
+                                    </div>
+
                                     {/* Total Sales Card */}
                                     <div className="bg-teal-700 dark:bg-teal-800 p-4 rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold text-teal-100 dark:text-teal-200 mb-2">Total Sales</h3>
+                                        <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Total Sales</h3>
                                         <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalSales.toLocaleString()}.00</p>
                                     </div>
 
                                     {/* Sales by Category */}
-                                    <div className="bg-indigo-700 dark:bg-indigo-800 p-4 rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold text-indigo-100 dark:text-indigo-200 mb-2">Sales by Category</h3>
-                                        <ul className="list-disc pl-5 text-indigo-100 dark:text-indigo-200">
+                                    <div className="bg-teal-700 dark:bg-teal-600 p-4 rounded-lg shadow-mdd">
+                                        <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-4">Sales by Category</h3>
+                                        <div className="grid grid-cols-2">
+                                        <ul className="list-disc text-lg pl-5 text-indigo-100 dark:text-indigo-100">
+                                            <br/>
                                             {salesByCategory.map((category) => (
                                                 <li key={category.category}>
                                                     {category.category}: Rs.{category.total_sales.toLocaleString()}
                                                 </li>
                                             ))}
                                         </ul>
+                                        <div style={{ height: '300px' }}>
+                                            <Pie data={pieData} options={pieOptions} />
+                                        </div>
+                                        </div>
                                     </div>
 
                                     {/* Sales by Payment Method */}
-                                    <div className="bg-green-700 dark:bg-green-800 p-4 rounded-lg shadow-md">
-                                        <h3 className="text-lg font-semibold text-green-100 dark:text-green-200 mb-2">Sales by Payment Method</h3>
-                                        <ul className="list-disc pl-5 text-green-100 dark:text-green-200">
+                                    <div className="bg-teal-700 dark:bg-teal-800 p-4 rounded-lg shadow-md">
+                                        <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-4">Sales by Payment Method</h3>
+                                        <div className="grid grid-cols-2">
+                                        <ul className="list-disc text-lg pl-5 text-green-100 dark:text-green-200 mb-4">
+                                            <br/>
                                             {salesByPaymentMethod.map((method) => (
                                                 <li key={method.payment}>
                                                     {method.payment}: Rs.{method.total_sales.toLocaleString()}
                                                 </li>
                                             ))}
                                         </ul>
+                                        <div style={{ height: '200px' }}>
+                                            {/* Uncomment the one you want to use */}
+                                            {/* <Pie data={pieData} /> */}
+                                            <Bar data={barData} options={barOptions} />
+                                        </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
 
                             {/* User Reports Section */}
-                            <div className="bg-yellow-200 dark:bg-yellow-600 rounded-lg shadow-md p-4 mb-6">
+                            <div className="bg-gray-400 dark:bg-gray-700 rounded-lg shadow-md p-4 mb-6">
                                 <h2 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-4">User Reports</h2>
                                 <div className="space-y-4">
-                                    <p className="text-lg font-medium">Active Users: {activeUsers}</p>
+                                    <p className="text-lg text-white font-medium">Active Users: {activeUsers}</p>
                                     <div>
-                                        <h3 className="text-lg font-semibold">User Registrations Over Time:</h3>
-                                        <ul className="list-disc pl-5">
+                                        <h3 className="text-lg text-gray-200 font-semibold m-2">User Registrations Over Time:</h3>
+                                        <ul className="list-disc text-lg text-white pl-7">
                                             {userRegistrations.map((registration) => (
                                                 <li key={registration.date}>{registration.date}: {registration.count}</li>
                                             ))}
                                         </ul>
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-semibold">Users by Role:</h3>
-                                        <ul className="list-disc pl-5">
+                                        <h3 className="text-lg text-gray-200 font-semibold m-2">Users by Role:</h3>
+                                        <ul className="list-disc text-lg text-white pl-7">
                                             {usersByRole.map((role) => (
                                                 <li key={role.role}>{role.role}: {role.count}</li>
                                             ))}
@@ -139,77 +270,78 @@ export default function Reports({
                             </div>
 
                             {/* Material Reports Section */}
-                            <div className="bg-purple-200 dark:bg-purple-600 rounded-lg shadow-md p-4 mb-6">
-                                <h2 className="text-xl font-semibold text-purple-900 dark:text-purple-100 mb-4">Material Reports</h2>
+                            <div className="bg-gray-400 dark:bg-gray-900 rounded-lg shadow-md p-4 mb-6">
+                                <h2 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-4">Material Reports</h2>
                                 <div className="space-y-4">
                                     <div>
-                                        <h3 className="text-lg font-semibold">Inventory Status:</h3>
-                                        <ul className="list-disc pl-5">
+                                        <h3 className="text-lg text-white font-semibold">Inventory Status:</h3>
+                                        <br/>
+                                        <ul className="list-disc text-lg pl-5">
                                             {inventoryStatus.map((material) => (
-                                                <li key={material.id}>{material.name}: {material.quantity}</li>
+                                                <li
+                                                    key={material.id}
+                                                    className={`${
+                                                        material.quantity < 10
+                                                            ? 'text-red-900 dark:text-red-600'
+                                                            : 'text-green-900 dark:text-green-600'
+                                                    }`}
+                                                >
+                                                    <span className="mr-3">{material.name}</span>
+                                                    <span className="ml-3">: {material.quantity}</span>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
+                                    <br/>
                                     <div>
-                                        <h3 className="text-lg font-semibold">Most Sold Materials:</h3>
-                                        <ul className="list-disc pl-5">
+                                        <h3 className="text-lg text-white font-semibold">Most Sold Materials:</h3>
+                                        <br/>
+                                        <ul className="list-disc text-lg text-white pl-5">
                                             {mostSoldMaterials.map((material) => (
-                                                <li key={material.name}>{material.name}: {material.total_sold}</li>
+                                                <li key={material.name}>
+                                                    <span className="mr-2">{material.name}</span>
+                                                    <span className="ml-4">: {material.total_sold}</span>
+                                                </li>
                                             ))}
                                         </ul>
                                     </div>
-                                    <div>
+                                    {/*<div>
                                         <h3 className="text-lg font-semibold">Low Stock Materials:</h3>
                                         <ul className="list-disc pl-5">
                                             {lowStockMaterials.map((material) => (
                                                 <li key={material.id}>{material.name}: {material.quantity}</li>
                                             ))}
                                         </ul>
-                                    </div>
+                                    </div>*/}
                                 </div>
                             </div>
 
                             {/* Order Reports Section */}
-                            <div className="bg-pink-200 dark:bg-pink-600 rounded-lg shadow-md p-4 mb-6">
-                                <h2 className="text-xl font-semibold text-pink-900 dark:text-pink-100 mb-4">Order Reports</h2>
+                            <div className="bg-gray-400 dark:bg-gray-700 rounded-lg shadow-md p-4 mb-6">
+                                <h2 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-4">Order Reports</h2>
                                 <div className="space-y-4">
-                                    <div>
-                                        <h3 className="text-lg font-semibold">Orders by Status:</h3>
-                                        <ul className="list-disc pl-5">
-                                            {ordersByStatus.map((status) => (
-                                                <li key={status.status}>{status.status}: {status.count}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <p className="text-lg font-medium">Average Order Value: Rs.{averageOrderValue.toLocaleString()}</p>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white m-2">Orders by Status:</h3>
+                                    <ul className="list-disc pl-5">
+                                        {ordersByStatus.map((status) => (
+                                            <li
+                                                key={status.status}
+                                                className={`${
+                                                    status.status.toLowerCase() === 'pending'
+                                                        ? 'text-yellow-600 dark:text-yellow-400'
+                                                        : status.status.toLowerCase() === 'success'
+                                                        ? 'text-green-600 dark:text-green-400'
+                                                        : 'text-white'
+                                                }`}
+                                            >
+                                                {status.status}: {status.count}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                    <p className="text-lg text-gray-200 font-medium">Average Order Value: Rs.{averageOrderValue.toLocaleString()}</p>
                                 </div>
                             </div>
-
-                            {/* Generate Report Form */}
-                            <form onSubmit={handleGenerateReport} className="bg-gray-100 dark:bg-gray-900 rounded-lg shadow-md p-4">
-                                <h2 className="text-xl font-semibold mb-4">Generate Report</h2>
-                                <div className="mb-4">
-                                    <label htmlFor="reportType" className="block text-gray-700 dark:text-gray-300 mb-2">Report Type:</label>
-                                    <select
-                                        name="reportType"
-                                        id="reportType"
-                                        value={reportType}
-                                        onChange={(e) => setReportType(e.target.value)}
-                                        className="block w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-600 text-white"
-                                    >
-                                        <option value="">Select Report Type</option>
-                                        <option value="daily">Daily</option>
-                                        <option value="weekly">Weekly</option>
-                                        <option value="monthly">Monthly</option>
-                                    </select>
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-600 disabled:opacity-25 transition"
-                                >
-                                    Generate Report
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>

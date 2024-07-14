@@ -17,7 +17,7 @@ class ReportController extends Controller
     {
         // Basic summaries
         $totalOrders = Order::count();
-        $totalIncome = Order::sum('total_amount');
+        $totalSuccess = Order::where('status', 'success')->sum('total_amount');
         $totalPending = Order::where('status', 'pending')->sum('total_amount');
         $totalCustomers = User::where('role', 'customer')->count();
         $totalAdmins = User::where('role', 'admin')->count();
@@ -62,11 +62,20 @@ class ReportController extends Controller
             ->get()
             ->map(function ($item) {
                 $material = Material::find($item->material_id);
+                $totalCost = $material->buy_price * $item->total_sold; // Calculate total cost
                 return [
                     'name' => $material->name,
                     'total_sold' => $item->total_sold,
+                    'buy_price' => $material->buy_price,
+                    'total_cost' => $totalCost,
                 ];
             });
+
+            // Calculate total cost for all materials sold
+            $totalCost = $mostSoldMaterials->sum('total_cost');
+
+            // Calculate total income (totalSales - totalCost)
+            $totalIncome = $totalSales - $totalCost;
 
         $lowStockMaterials = Material::where('quantity', '<', 10)->get();
 
@@ -79,7 +88,7 @@ class ReportController extends Controller
 
         return Inertia::render('reports/index', [
             'totalOrders' => $totalOrders,
-            'totalIncome' => $totalIncome,
+            'totalSuccess' => $totalSuccess,
             'totalPending' => $totalPending,
             'totalCustomers' => $totalCustomers,
             'totalAdmins' => $totalAdmins,
@@ -97,6 +106,7 @@ class ReportController extends Controller
             'averageOrderValue' => $averageOrderValue,
             'startDate' => $startDate,
             'endDate' => $endDate,
+            'totalIncome' => $totalIncome,
         ]);
     }
 

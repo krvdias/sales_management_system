@@ -53,12 +53,12 @@ export default function AdminDashboard({ auth, customerCount, adminCount, agentC
                                     <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">{orderCount}</p>
                                 </div>
                                 <div className="p-4 bg-purple-100 dark:bg-green-700 rounded-lg shadow-md">
-                                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Total Income</h3>
-                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">Rs. {totalIncome} .00</p>
+                                    <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Success Income</h3>
+                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">Rs. {totalIncome.toLocaleString()} .00</p>
                                 </div>
                                 <div className="p-4 bg-purple-100 dark:bg-red-600 rounded-lg shadow-md">
                                     <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Pending Income</h3>
-                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">Rs. {pendingIncome} .00</p>
+                                    <p className="text-4xl font-bold text-gray-800 dark:text-gray-200">Rs. {pendingIncome.toLocaleString()} .00</p>
                                 </div>
                             </div>
                         </div>

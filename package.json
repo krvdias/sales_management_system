@@ -22,7 +22,9 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/inertia-react": "^0.8.1",
+        "chart.js": "^4.4.3",
         "react-calendar": "^5.0.0",
+        "react-chartjs-2": "^5.2.0",
         "react-slick": "^0.30.2",
         "slick-carousel": "^1.8.1"
     }

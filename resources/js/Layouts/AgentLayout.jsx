@@ -170,9 +170,8 @@ export default function AgentLayout({ user, header, children }) {
                                 </div>
                             )}
                         </div>
-                        <SideNavLink href={route("bill.view")}>Billing</SideNavLink>
                         <SideNavLink href={route("agent/orders.index")}>Orders</SideNavLink>
-                        <SideNavLink href="Reports">Reports</SideNavLink>
+                        <SideNavLink href={route("bill.view")}>Billing</SideNavLink>
                     </nav>
                 </aside>
                 <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
