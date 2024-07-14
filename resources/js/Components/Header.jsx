@@ -6,7 +6,7 @@ export default function Header({ auth }) {
     const { url } = usePage();
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const linkClasses = (path) => 
+    const linkClasses = (path) =>
         `text-gray-800 ${url === path ? 'border-b-2 border-blue-600' : ''}`;
 
     return (
@@ -22,7 +22,10 @@ export default function Header({ auth }) {
                     <Link href="/" className='font-bold'>Home</Link>
                     <Link href={route('Materials.show')} className='font-bold'>Materials</Link>
                     {auth.user && (
-                        <Link href={route('cart.index')} className='font-bold'>Cart</Link>
+                        <>
+                            <Link href={route('cart.index')} className='font-bold'>Cart</Link>
+                            <Link href="/user-chat" className='font-bold'>Chat with us</Link>
+                        </>
                     )}
                     <Link href={route('Contacts.view')} className='font-bold'>Contact Us</Link>
                     <Link href={route('About.index')} className='font-bold'>About Us</Link>
@@ -109,7 +112,10 @@ export default function Header({ auth }) {
                     <Link href="/" className='font-bold'>Home</Link>
                     <Link href={route('Materials.show')} className='font-bold'>Materials</Link>
                     {auth.user && (
-                        <Link href={route('cart.index')} className='font-bold'>Cart</Link>
+                        <>
+                            <Link href={route('cart.index')} className='font-bold'>Cart</Link>
+                            <Link href="/user-chat" className='font-bold'>Chat with us</Link>
+                        </>
                     )}
                     <Link href={route('Contacts.view')} className='font-bold'>Contact Us</Link>
                     <Link href={route('About.index')} className='font-bold'>About Us</Link>

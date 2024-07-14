@@ -4,6 +4,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\CartController;
@@ -11,16 +12,16 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\BillerController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 
 
 
@@ -82,6 +83,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/{material_id}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/remove/{material_id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    //for user message
+    Route::get('/chat-user', [MessagesController::class, 'userChat'])->name('chat.user');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -132,6 +136,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //for reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::post('/reports/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
+
+    //for message
+    Route::get('/chat-admin', [MessagesController::class, 'adminChat'])->name('chat.admin');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -161,7 +168,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('agent/AddMaterial', [MaterialController::class, 'stores'])->name('AddMaterial.stores');
     Route::post('agent/MaterialList/{material}', [MaterialController::class, 'edits'])->name('MaterialList.edits');
     Route::delete('agent/MaterialList/{material}', [MaterialController::class, 'deletes'])->name('MaterialList.deletes');
-    
+
 
     Route::get('agent/orders', [OrderController::class, 'index'])->name('agent/orders.index');
     Route::get('agent/orders/{order}', [OrderController::class, 'getOrderItems'])->name('agent/orders.items');
