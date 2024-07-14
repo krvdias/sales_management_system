@@ -168,11 +168,11 @@ export default function Reports({
                                     </div>
                                     <div className="bg-teal-700 dark:bg-teal-600 p-2 rounded-lg shadow-md">
                                         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Success Income</h3>
-                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalSuccess.toLocaleString()}.00</p>
+                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalSuccess}.00</p>
                                     </div>
                                     <div className="bg-teal-700 dark:bg-teal-600 p-2 rounded-lg shadow-md">
                                         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Pending Income</h3>
-                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalPending.toLocaleString()}.00</p>
+                                        <p className="text-xl font-bold text-gray-800 dark:text-gray-200">Rs.{totalPending}.00</p>
                                     </div>
                                     <div className="bg-teal-700 dark:bg-teal-600 p-2 rounded-lg shadow-md">
                                         <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-1">Total Customers</h3>
