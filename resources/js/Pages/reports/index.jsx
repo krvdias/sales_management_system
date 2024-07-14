@@ -70,7 +70,7 @@ export default function Reports({
                     '#36A2EB',
                     '#FFCE56',
                 ]
-                
+
             }
         ]
     };
@@ -196,13 +196,13 @@ export default function Reports({
                                     {/* Total Income Card */}
                                     <div className="bg-teal-700 dark:bg-teal-800 p-4 rounded-lg shadow-md">
                                         <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Total Income</h3>
-                                        <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalIncome.toLocaleString()}.00</p>
+                                        <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalIncome}.00</p>
                                     </div>
 
                                     {/* Total Sales Card */}
                                     <div className="bg-teal-700 dark:bg-teal-800 p-4 rounded-lg shadow-md">
                                         <h3 className="text-xl font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Total Sales</h3>
-                                        <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalSales.toLocaleString()}.00</p>
+                                        <p className="text-2xl font-bold text-teal-100 dark:text-teal-200">Rs.{totalSales}.00</p>
                                     </div>
 
                                     {/* Sales by Category */}
@@ -213,7 +213,7 @@ export default function Reports({
                                             <br/>
                                             {salesByCategory.map((category) => (
                                                 <li key={category.category}>
-                                                    {category.category}: Rs.{category.total_sales.toLocaleString()}
+                                                    {category.category}: Rs.{category.total_sales}
                                                 </li>
                                             ))}
                                         </ul>
@@ -231,7 +231,7 @@ export default function Reports({
                                             <br/>
                                             {salesByPaymentMethod.map((method) => (
                                                 <li key={method.payment}>
-                                                    {method.payment}: Rs.{method.total_sales.toLocaleString()}
+                                                    {method.payment}: Rs.{method.total_sales}
                                                 </li>
                                             ))}
                                         </ul>
@@ -339,7 +339,7 @@ export default function Reports({
                                         ))}
                                     </ul>
                                 </div>
-                                    <p className="text-lg text-gray-200 font-medium">Average Order Value: Rs.{averageOrderValue.toLocaleString()}</p>
+                                    <p className="text-lg text-gray-200 font-medium">Average Order Value: Rs.{averageOrderValue}</p>
                                 </div>
                             </div>
                         </div>
