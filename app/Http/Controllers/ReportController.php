@@ -10,7 +10,6 @@ use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
 class ReportController extends Controller
 {
     public function index(Request $request)
@@ -71,11 +70,11 @@ class ReportController extends Controller
                 ];
             });
 
-            // Calculate total cost for all materials sold
-            $totalCost = $mostSoldMaterials->sum('total_cost');
+        // Calculate total cost for all materials sold
+        $totalCost = $mostSoldMaterials->sum('total_cost');
 
-            // Calculate total income (totalSales - totalCost)
-            $totalIncome = $totalSales - $totalCost;
+        // Calculate total income (totalSales - totalCost)
+        $totalIncome = $totalSales - $totalCost;
 
         $lowStockMaterials = Material::where('quantity', '<', 10)->get();
 
@@ -112,7 +111,6 @@ class ReportController extends Controller
 
     public function generateReport(Request $request)
     {
-        // Handle the report generation logic based on the report type.
-        // This can be done by redirecting back with a filter parameter or generating a downloadable report.
+        //
     }
 }
