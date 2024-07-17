@@ -236,8 +236,7 @@ export default function Reports({
                                             ))}
                                         </ul>
                                         <div style={{ height: '200px' }}>
-                                            {/* Uncomment the one you want to use */}
-                                            {/* <Pie data={pieData} /> */}
+
                                             <Bar data={barData} options={barOptions} />
                                         </div>
                                         </div>
